@@ -1,7 +1,7 @@
 <script lang="ts" setup></script>
 
 <template>
-  <welcome />
+<div>Generate Colors</div>
 </template>
 
 
