@@ -1,7 +1,31 @@
-<script lang="ts" setup></script>
+<script>
+import { ref } from 'vue';
+
+export default {
+  setup() {
+    const colorSchemeJson = ref({});
+
+    const updateColorSchemeJson = (newColorSchemeJson) => {
+      colorSchemeJson.value = newColorSchemeJson;
+    };
+
+    return {
+      colorSchemeJson,
+      updateColorSchemeJson,
+    };
+  },
+};
+</script>
+
 
 <template>
-<div>Generate Colors</div>
+  <div>
+    <div>Generate Colors</div>
+    <ExportPalette :palette="colorSchemeJson" />
+    <CopyJson :palette="colorSchemeJson" />
+    <ColorPalette :colors="colorSchemeJson" />
+    <GenerateColors @color-scheme-generated="updateColorSchemeJson" />
+  </div>
 </template>
 
 

@@ -8,12 +8,8 @@ export default defineNuxtConfig({
   target: 'static',
   app: {
 //  baseURL: process.env.BASE_URL || 'http://localhost:3000',
-    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
-      title: 'Nuxt Tailwind Template',
-      meta: [
-        { name: 'description', content: 'Speed up your Nuxt 3 and Vue development with this starter template.' }
-      ],
+      title: 'Color Palette Generator',
     }
   },
 //  prerender: {
