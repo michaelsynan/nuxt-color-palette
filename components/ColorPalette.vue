@@ -32,27 +32,50 @@
 -->
 <template>
   <div>
-    <button @click="toggleShades" class="mb-4">
-      {{ showShades ? 'Hide Shades' : 'Show Shades' }}
-    </button>
+    <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in mb-4">
+  <input
+    type="checkbox"
+    @change="toggleShades"
+    name="toggle"
+    id="toggle"
+    class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
+  />
+  <label
+    for="toggle"
+    class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"
+  ></label>
+</div>
+
     <div class="flex justify-center flex-wrap">
       <div v-for="(group, groupName) in filteredColorGroups" :key="groupName" class="m-4">
         <h3 class="text-lg capitalize">{{ groupName }}</h3>
         <div class="flex flex-wrap">
+          <div class="flex flex-wrap">
           <div
-            v-for="([colorKey, colorValue]) in Object.entries(group)"
+            v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => key.endsWith('-500'))"
+            :key="colorKey"
+            class="color-square base-color h-32 w-32 flex flex-col justify-between items-center"
+            :style="{ backgroundColor: colorValue }"
+          >
+            <span class="color-label mb-1">{{ colorValue }}</span>
+          </div>
+        </div>
+          <!-- Updated loop for shades only -->
+          <div
+            v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => !key.endsWith('-500'))"
             :key="colorKey"
             :class="[
               'color-square',
-              colorKey.endsWith('-500') ? 'base-color h-32 w-32' : 'h-24 w-24',
+              'h-24 w-24',
               'flex flex-col justify-between items-center',
-              showShades || colorKey.endsWith('-500') ? '' : 'hidden'
+              showShades ? '' : 'hidden'
             ]"
             :style="{ backgroundColor: colorValue }"
           >
             <span class="color-label mb-1">{{ colorValue }}</span>
           </div>
         </div>
+        <!-- Loop for -500 colors -->
       </div>
     </div>
   </div>
@@ -129,6 +152,13 @@ const filteredColorGroups = computed(() => {
 .base-color {
   /* position: absolute; */
   z-index: 1;
+}
+
+.toggle-checkbox:checked {
+  @apply transform translate-x-full border-green-500;
+}
+.toggle-checkbox:checked + .toggle-label {
+  @apply bg-green-500;
 }
 
 </style>
