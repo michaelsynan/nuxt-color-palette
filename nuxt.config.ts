@@ -12,6 +12,9 @@ export default defineNuxtConfig({
       title: 'Color Palette Generator',
     }
   },
+  router: {
+    base: '/nuxt-color-palette/',
+  },
 //  prerender: {
 //    routes: [ process.env.BASE_URL || 'http://localhost:3000'],
 //  },

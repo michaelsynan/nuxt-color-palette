@@ -37,7 +37,7 @@
   </div>
 </template>
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, onMounted } from 'vue';
 import chroma from 'chroma-js';
 import { generateColors } from '@/config/generateColors.js';
 
@@ -45,7 +45,9 @@ const numBaseColors = ref(3);
 const numShades = ref(1);
 const colorScheme = ref('triadic');
 
-
+onMounted(() => {
+  generateColorsAndSave();
+});
 
 
 function randomHexColor() {
