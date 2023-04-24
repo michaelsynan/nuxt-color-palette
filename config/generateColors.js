@@ -53,10 +53,9 @@ function generateBaseColors(colorScheme, numBaseColors) {
   return baseColors;
 }
 
-export function generateColors(numBaseColors, numShades, colorScheme) {
-  const baseColors = generateBaseColors(colorScheme, numBaseColors);
-  const colorShades = baseColors.map(color => generateShades(color, numShades));
-
+export function generateColors(numBaseColors, numShades, colorScheme, baseColors) {
+//  const baseColors = generateBaseColors(colorScheme, numBaseColors);
+const colorShades = baseColors.map(color => generateShades(color, numShades));
   const orderedTokens = baseColors.reduce((tokens, color, index) => {
     const prefix = index === 0 ? 'primary' :
                    index === 1 ? 'secondary' :
