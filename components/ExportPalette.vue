@@ -2,7 +2,7 @@
 <template>
   <div>
     <button @click="exportPalette" class="py-2 px-4 bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded">Export Palette</button>
-    <div v-if="exported" class="text-sm text-blue-500 mt-2">Palette exported to clipboard!</div>
+    <div v-if="exported" class="text-sm text-green-500 mt-2 absolute">Palette exported to clipboard!</div>
   </div>
 </template>
 

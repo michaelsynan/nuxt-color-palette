@@ -2,7 +2,7 @@
 <template>
   <div>
     <button @click="copyPalette" class="py-2 px-4 bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded">Copy Palette</button>
-    <div v-if="copied" class="text-sm text-green-500 mt-2">Copied to clipboard!</div>
+    <div v-if="copied" class="text-sm text-green-500 mt-2 absolute">Copied to clipboard!</div>
   </div>
 </template>
 
