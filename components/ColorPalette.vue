@@ -1,35 +1,3 @@
-<!--
-  <div class="flex flex-col justify-center">
-    <button @click="toggleShades" class="mb-4">
-      {{ showShades ? 'Hide Shades' : 'Show Shades' }}
-    </button>
-    <div class="flex justify-center">
-      <div class="flex flex-wrap gap-4 w-max">
-        <div v-for="(group, groupName) in filteredColorGroups" :key="groupName" class="flex-1">
-          <div class="flex-col">
-          <h3>{{ groupName }}</h3>
-          <div class="flex flex-col">
-            <div
-              v-for="([colorKey, colorValue]) in Object.entries(group)"
-              :key="colorKey"
-              :class="[
-                'color-square',
-                colorKey.endsWith('-500') ? 'base-color h-32 w-32' : 'h-24 w-24',
-                'flex flex-col justify-between items-center'
-              ]"
-              :style="{ backgroundColor: colorValue }"
-            >
-              <div></div>
-              <span class="color-label mb-1">{{ colorValue }}</span>
-            </div>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
--->
 <template>
   <div>
     <div class="inline-block w-10 align-middle select-none transition duration-200 ease-in mb-4 fixed bottom-10 left-10">

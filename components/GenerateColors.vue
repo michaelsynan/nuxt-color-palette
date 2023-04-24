@@ -15,6 +15,8 @@
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
       </select>
     </div>
     <div>
@@ -42,7 +44,17 @@ import { generateColors } from '@/config/generateColors.js';
 const numBaseColors = ref(3);
 const numShades = ref(1);
 const colorScheme = ref('triadic');
-const initialColor = ref('#FFFFFF');
+
+
+
+
+function randomHexColor() {
+  const hex = Math.floor(Math.random() * 16777215).toString(16);
+  return "#" + hex.padStart(6, '0');
+}
+
+const initialColor = ref(randomHexColor());
+
 
 const emit = defineEmits(['color-scheme-generated']);
 
