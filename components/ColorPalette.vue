@@ -31,31 +31,31 @@
 </template>
 -->
 <template>
-<div>
-  <button @click="toggleShades" class="mb-4">
+  <div>
+    <button @click="toggleShades" class="mb-4">
       {{ showShades ? 'Hide Shades' : 'Show Shades' }}
     </button>
-    <div class="flex justify-center">
-      <div v-for="(group, groupName) in filteredColorGroups" :key="groupName" class="flex-1 flex-row">
-        <h3>{{ groupName }}</h3>
-        <div>test</div>
-        <div>second test</div>
-        <div
-              v-for="([colorKey, colorValue]) in Object.entries(group)"
-              :key="colorKey"
-              :class="[
-                'color-square',
-                colorKey.endsWith('-500') ? 'base-color h-32 w-32' : 'h-24 w-24',
-                'flex flex-col justify-between items-center'
-              ]"
-              :style="{ backgroundColor: colorValue }"
-            >
+    <div class="flex justify-center flex-wrap">
+      <div v-for="(group, groupName) in filteredColorGroups" :key="groupName" class="m-4">
+        <h3 class="text-lg capitalize">{{ groupName }}</h3>
+        <div class="flex flex-wrap">
+          <div
+            v-for="([colorKey, colorValue]) in Object.entries(group)"
+            :key="colorKey"
+            :class="[
+              'color-square',
+              colorKey.endsWith('-500') ? 'base-color h-32 w-32' : 'h-24 w-24',
+              'flex flex-col justify-between items-center',
+              showShades || colorKey.endsWith('-500') ? '' : 'hidden'
+            ]"
+            :style="{ backgroundColor: colorValue }"
+          >
             <span class="color-label mb-1">{{ colorValue }}</span>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-
+  </div>
 </template>
 
 
