@@ -7,14 +7,12 @@ import Components from 'unplugin-vue-components/vite'
 export default defineNuxtConfig({
   target: 'static',
   app: {
-//  baseURL: process.env.BASE_URL || 'http://localhost:3000',
+  baseURL: '/nuxt-color-palette/',
     head: {
       title: 'Color Palette Generator',
     }
   },
-  router: {
-    base: '/nuxt-color-palette/',
-  },
+
 //  prerender: {
 //    routes: [ process.env.BASE_URL || 'http://localhost:3000'],
 //  },
