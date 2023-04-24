@@ -20,11 +20,12 @@ export default {
 
 <template>
   <div>
+    <GenerateColors @color-scheme-generated="updateColorSchemeJson" />
     <div>Generate Colors</div>
     <ExportPalette :palette="colorSchemeJson" />
     <CopyJson :palette="colorSchemeJson" />
     <ColorPalette :colors="colorSchemeJson" />
-    <GenerateColors @color-scheme-generated="updateColorSchemeJson" />
+
   </div>
 </template>
 

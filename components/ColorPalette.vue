@@ -1,58 +1,134 @@
-<template>
-  <div>
-    <div v-for="(group, groupName) in colorGroups" :key="groupName">
-      <h3>{{ groupName }}</h3>
-      <div
-        v-for="(color, key) in group"
-        :key="key"
-        class="color-square"
-        :style="{ backgroundColor: color }"
-      >
-        {{ key }}
+<!--
+  <div class="flex flex-col justify-center">
+    <button @click="toggleShades" class="mb-4">
+      {{ showShades ? 'Hide Shades' : 'Show Shades' }}
+    </button>
+    <div class="flex justify-center">
+      <div class="flex flex-wrap gap-4 w-max">
+        <div v-for="(group, groupName) in filteredColorGroups" :key="groupName" class="flex-1">
+          <div class="flex-col">
+          <h3>{{ groupName }}</h3>
+          <div class="flex flex-col">
+            <div
+              v-for="([colorKey, colorValue]) in Object.entries(group)"
+              :key="colorKey"
+              :class="[
+                'color-square',
+                colorKey.endsWith('-500') ? 'base-color h-32 w-32' : 'h-24 w-24',
+                'flex flex-col justify-between items-center'
+              ]"
+              :style="{ backgroundColor: colorValue }"
+            >
+              <div></div>
+              <span class="color-label mb-1">{{ colorValue }}</span>
+            </div>
+          </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
+-->
+<template>
+<div>
+  <button @click="toggleShades" class="mb-4">
+      {{ showShades ? 'Hide Shades' : 'Show Shades' }}
+    </button>
+    <div class="flex justify-center">
+      <div v-for="(group, groupName) in filteredColorGroups" :key="groupName" class="flex-1 flex-row">
+        <h3>{{ groupName }}</h3>
+        <div>test</div>
+        <div>second test</div>
+        <div
+              v-for="([colorKey, colorValue]) in Object.entries(group)"
+              :key="colorKey"
+              :class="[
+                'color-square',
+                colorKey.endsWith('-500') ? 'base-color h-32 w-32' : 'h-24 w-24',
+                'flex flex-col justify-between items-center'
+              ]"
+              :style="{ backgroundColor: colorValue }"
+            >
+            <span class="color-label mb-1">{{ colorValue }}</span>
+            </div>
+        </div>
+    </div>
+</div>
 
-<script>
-import { computed } from 'vue';
+</template>
 
-export default {
-  props: {
-    colors: {
-      type: Object,
-      default: () => ({}),
-    },
+
+<script setup>
+import { ref, computed, watch } from 'vue';
+
+const props = defineProps({
+  colors: {
+    type: Object,
+    required: true,
   },
-  setup(props) {
-    const colorGroups = computed(() => {
-      const groups = {};
-      for (const key in props.colors) {
-        const prefix = key.split('-')[0];
-        if (!groups[prefix]) {
-          groups[prefix] = {};
-        }
-        groups[prefix][key] = props.colors[key];
-      }
-      return groups;
-    });
+});
 
-    return { colorGroups };
-  },
+const showShades = ref(true);
+const colorGroups = ref({});
+
+const updateColorGroups = () => {
+  const groups = {};
+  for (const key in props.colors) {
+    const groupName = key.split('-')[0];
+    if (!groups[groupName]) {
+      groups[groupName] = {};
+    }
+    groups[groupName][key] = props.colors[key];
+  }
+  colorGroups.value = groups;
 };
+
+updateColorGroups();
+
+watch(
+  () => props.colors,
+  () => {
+    updateColorGroups();
+  }
+);
+
+function toggleShades() {
+  showShades.value = !showShades.value;
+}
+
+const filteredColorGroups = computed(() => {
+  if (showShades.value) {
+    return colorGroups.value;
+  }
+
+  const filteredGroups = {};
+  for (const groupName in colorGroups.value) {
+    filteredGroups[groupName] = {};
+    for (const colorKey in colorGroups.value[groupName]) {
+      if (colorKey.endsWith('-500')) {
+        filteredGroups[groupName][colorKey] = colorGroups.value[groupName][colorKey];
+      }
+    }
+  }
+  return filteredGroups;
+});
 </script>
 
 <style scoped>
 .color-square {
-  display: inline-block;
-  width: 100px;
-  height: 100px;
-  line-height: 100px;
-  text-align: center;
+  display: inline-flex;
   margin: 5px;
-  border: 1px solid #ccc;
-  font-family: sans-serif;
-  font-size: 14px;
-  color: #000;
+  border: 1px solid #dedede;
 }
+.color-label {
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.base-color {
+  /* position: absolute; */
+  z-index: 1;
+}
+
 </style>

@@ -31,28 +31,25 @@
   </div>
 </template> 
 
-<script>
+
+<script setup>
+import { ref, defineEmits } from 'vue';
 import { generateColors } from '@/config/generateColors.js';
 
-export default {
-  data() {
-    return {
-      numBaseColors: 3,
-      numShades: 1,
-      colorScheme: 'triadic',
-    };
-  },
-  methods: {
-    async generateColorsAndSave() {
-      const orderedOutput = await generateColors(
-        this.numBaseColors,
-        this.numShades,
-        this.colorScheme
-      );
-      const colorSchemeJson = orderedOutput;
-      console.log('Color scheme JSON:', colorSchemeJson);
-      this.$emit('color-scheme-generated', colorSchemeJson);
-    },
-  },
-};
+const numBaseColors = ref(3);
+const numShades = ref(1);
+const colorScheme = ref('triadic');
+
+const emit = defineEmits(['color-scheme-generated']);
+
+async function generateColorsAndSave() {
+  const orderedOutput = await generateColors(
+    numBaseColors.value,
+    numShades.value,
+    colorScheme.value
+  );
+  const colorSchemeJson = orderedOutput;
+  console.log('Color scheme JSON:', colorSchemeJson);
+  emit('color-scheme-generated', colorSchemeJson);
+}
 </script>
