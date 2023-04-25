@@ -1,9 +1,9 @@
 // generateColors.js
 import chroma from 'chroma-js';
 
-const numBaseColors = 3;
-const numShades = 1;
-const colorScheme = 'triadic';
+// const numBaseColors = 3;
+// const numShades = 1;
+// const colorScheme = 'triadic';
 const namingConvention = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
 function randomHexColor() {
@@ -24,7 +24,7 @@ function generateShades(color, numShades) {
   return shades;
 }
 
-function generateBaseColors(colorScheme, numBaseColors) {
+export function generateBaseColors(colorScheme, numBaseColors) { // Added numBaseColors as an argument
   const baseColor = randomHexColor();
   const baseColors = [baseColor];
 

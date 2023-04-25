@@ -39,55 +39,29 @@
 <script setup>
 import { ref, defineEmits, onMounted } from 'vue';
 import chroma from 'chroma-js';
-import { generateColors } from '@/config/generateColors.js';
+import { generateColors, generateBaseColors } from '@/config/generateColors.js';
 
 const numBaseColors = ref(3);
 const numShades = ref(1);
 const colorScheme = ref('triadic');
+const emit = defineEmits(['color-scheme-generated']);
 
-onMounted(() => {
-  generateColorsAndSave();
-});
-
-
+/* Generate random initial color */
 function randomHexColor() {
   const hex = Math.floor(Math.random() * 16777215).toString(16);
   return "#" + hex.padStart(6, '0');
 }
 
 const initialColor = ref(randomHexColor());
+/* end generate random initial color */
 
-
-const emit = defineEmits(['color-scheme-generated']);
 
 async function generateColorsAndSave() {
   const initialColorValue = initialColor.value;
   const initialColorObject = chroma(initialColorValue);
   console.log('Initial Color:', initialColorValue);
 
-  function getBaseColors() {
-    const color = initialColorObject;
-    switch (colorScheme.value) {
-      case 'triadic':
-        return [color, chroma(color).set('hsl.h', '+120'), chroma(color).set('hsl.h', '-120')];
-      case 'complementary':
-        return [color, chroma(color).set('hsl.h', '+180')];
-      case 'splitComplementary':
-        return [color, chroma(color).set('hsl.h', '+150'), chroma(color).set('hsl.h', '-150')];
-      case 'analogous':
-        return [chroma(color).set('hsl.h', '-30'), color, chroma(color).set('hsl.h', '+30')];
-      case 'square':
-        return [color, chroma(color).set('hsl.h', '+90'), chroma(color).set('hsl.h', '+180'), chroma(color).set('hsl.h', '+270')];
-      case 'tetradic':
-        return [color, chroma(color).set('hsl.h', '+60'), chroma(color).set('hsl.h', '+180'), chroma(color).set('hsl.h', '+240')];
-      default:
-        return [color];
-    }
-  }
-
-  const baseColors = getBaseColors();
-  console.log('Base Colors:', baseColors);
-
+  const baseColors = generateBaseColors(colorScheme.value, numBaseColors.value);
   const orderedOutput = await generateColors(
     numBaseColors.value,
     numShades.value,
@@ -98,6 +72,11 @@ async function generateColorsAndSave() {
   const colorSchemeJson = orderedOutput;
   console.log('Color scheme JSON:', colorSchemeJson);
   emit('color-scheme-generated', colorSchemeJson);
-};
+}
+
+onMounted(() => {
+  generateColorsAndSave();
+});
+
 
 </script>
