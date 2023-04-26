@@ -51,6 +51,8 @@ const colorScheme = ref('triadic');
 const emit = defineEmits(['color-scheme-generated']);
 const useSelectedInitialColor = ref(false);
 const userSelectedInitialColor = ref('#000000');
+const regenerate = ref(false);
+
 
 /* Generate random initial color */
 function randomHexColor() {
@@ -71,26 +73,65 @@ watchEffect(() => {
 });
 
 async function generateColorsAndSave() {
-  if (!useSelectedInitialColor.value) {
-    initialColor.value = randomHexColor();
+  let selectedInitialColor;
+
+  if (useSelectedInitialColor.value) {
+    selectedInitialColor = userSelectedInitialColor.value;
+
+    // Generate a random color scheme
+    const randomColorSchemeOptions = [
+      'triadic',
+      'complementary',
+      'splitComplementary',
+      'analogous',
+      'square',
+      'tetradic',
+    ];
+    colorScheme.value =
+      randomColorSchemeOptions[
+        Math.floor(Math.random() * randomColorSchemeOptions.length)
+      ];
+  } else {
+    selectedInitialColor = randomHexColor();
   }
-  const initialColorValue = firstColor.value;
+
+  await nextTick(); // Wait for the next DOM update cycle
+
+  const initialColorValue = selectedInitialColor;
   const initialColorObject = chroma(initialColorValue);
   console.log('Initial Color:', initialColorValue);
 
-  const baseColors = generateBaseColors(colorScheme.value, numBaseColors.value, firstColor.value);
+  console.log('Values for generateBaseColors:',
+    'colorScheme:', colorScheme.value,
+    'numBaseColors:', numBaseColors.value,
+    'initialColorValue:', initialColorValue
+  );
+
+  const baseColors = await generateBaseColors(
+    colorScheme.value,
+    numBaseColors.value,
+    initialColorValue
+  );
+
+  console.log('Base colors:', baseColors)
+
+  console.log('Values for generateColors:',
+    'numBaseColors:', numBaseColors.value,
+    'numShades:', numShades.value,
+    'colorScheme:', colorScheme.value,
+    'baseColors:', baseColors
+  );
+
   const orderedOutput = await generateColors(
     numBaseColors.value,
     numShades.value,
     colorScheme.value,
     baseColors
   );
-
   const colorSchemeJson = orderedOutput;
   console.log('Color scheme JSON:', colorSchemeJson);
   emit('color-scheme-generated', colorSchemeJson);
 }
-
 
 
 onMounted(() => {

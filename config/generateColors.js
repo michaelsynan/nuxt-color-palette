@@ -24,7 +24,7 @@ function generateShades(color, numShades) {
   return shades;
 }
 
-export function generateBaseColors(colorScheme, numBaseColors, initialColor) {
+function generateBaseColors(colorScheme, numBaseColors, initialColor) {
   const baseColor = initialColor || randomHexColor();
   const baseColors = [baseColor];
 
@@ -33,8 +33,6 @@ export function generateBaseColors(colorScheme, numBaseColors, initialColor) {
 
   switch (colorScheme) {
     case 'triadic':
-    case 'complementary':
-    case 'splitComplementary':
     case 'analogous':
     case 'square':
     case 'tetradic':
@@ -42,6 +40,22 @@ export function generateBaseColors(colorScheme, numBaseColors, initialColor) {
         baseColors.push(chroma(baseColor).set('hsl.h', `+${angle * i}`).hex());
       }
       break;
+    case 'complementary':
+      baseColors.push(chroma(baseColor).set('hsl.h', '+180').hex());
+      for (let i = 2; i < numBaseColors; i++) {
+        const lightness = (i / (numBaseColors - 1)) * 100;
+        baseColors.push(chroma(baseColor).set('hsl.l', `${lightness}%`).hex());
+      }
+      break;
+    case 'splitComplementary':
+      baseColors.push(chroma(baseColor).set('hsl.h', '+150').hex());
+      baseColors.push(chroma(baseColor).set('hsl.h', '+210').hex());
+      for (let i = 3; i < numBaseColors; i++) {
+        const lightness = (i / (numBaseColors - 1)) * 100;
+        baseColors.push(chroma(baseColor).set('hsl.l', `${lightness}%`).hex());
+      }
+      break;
+    // Add other color schemes here
     default:
       console.log(`Color scheme ${colorScheme} not supported. Using the default 'triadic' scheme.`);
       for (let i = 1; i < numBaseColors; i++) {
@@ -52,6 +66,7 @@ export function generateBaseColors(colorScheme, numBaseColors, initialColor) {
 
   return baseColors;
 }
+
 
 export function generateColors(numBaseColors, numShades, colorScheme, baseColors) {
 //  const baseColors = generateBaseColors(colorScheme, numBaseColors);
