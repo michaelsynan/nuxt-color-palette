@@ -1,53 +1,36 @@
 <template>
-  <div>
+  <div class="h-full">
     <div class="inline-block w-10 align-middle select-none transition duration-200 ease-in mb-4 fixed bottom-10 left-10">
-  <label for="toggle" class="block mb-2 text-sm text-stone-400">Toggle Shades:</label>
-  <input
-    type="checkbox"
-    @change="toggleShades"
-    name="toggle"
-    id="toggle"
-    class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out"
-  />
-  <label
-    for="toggle"
-    class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 ease-in-out"
-  ></label>
-</div>
-
-
-
-    <div class="flex justify-center flex-wrap">
-      <div v-for="(group, groupName) in filteredColorGroups" :key="groupName" class="m-4">
-        <h3 class="text-lg capitalize hidden">{{ groupName }}</h3>
-    
-          <div class="flex flex-wrap">
-            <div
-  v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => key.endsWith('-500'))"
-  :key="colorKey"
-  class="color-square base-color h-32 w-32 flex flex-col justify-between items-center flex-grow"
-  :style="{ backgroundColor: colorValue }"
->
-  <span class="color-label font-bold mt-auto">{{ colorValue }}</span>
-</div>
-
-        </div>
-          <!-- Updated loop for shades only -->
-          <div
-            v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => !key.endsWith('-500'))"
-            :key="colorKey"
-            :class="[
-              'color-square',
-              'h-8 w-8',
-              'flex flex-col justify-between items-center text-xs',
-              showShades ? '' : 'hidden'
-            ]"
-            :style="{ backgroundColor: colorValue }"
-          >
-            
-          </div>
+      <label for="toggle" class="block mb-2 text-sm text-stone-400">Toggle Shades:</label>
+      <input type="checkbox" @change="toggleShades" name="toggle" id="toggle"
+        class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" />
+      <label for="toggle"
+        class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 ease-in-out"></label>
+    </div>
+    <div class="flex items-center justify-center h-full py-6">
       
-        <!-- Loop for -500 colors -->
+      <div v-for="(group, groupName) in filteredColorGroups" :key="groupName" class="m-4 max-w-[200px]">
+        <h3 class="text-lg capitalize hidden">{{ groupName }}</h3>
+
+        <div class="flex flex-wrap">
+          <div v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => key.endsWith('-500'))"
+            :key="colorKey" class="color-square base-color h-32 w-32 flex flex-col justify-between items-center flex-grow my-4"
+            :style="{ backgroundColor: colorValue }">
+<span class="color-label font-bold mt-auto" :class="computedTextColor(colorValue)">{{ colorValue }}</span>
+                    </div>
+        </div>
+        <div class="color-grid">
+        <transition name="fade" v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => !key.endsWith('-500'))"
+          :key="colorKey">
+          <div v-if="showShades" :class="[
+                'color-square',
+                'h-8 w-8',
+                'flex flex-col justify-between items-center text-xs'
+              ]" :style="{ backgroundColor: colorValue }">
+          </div>
+        </transition>
+      </div>
+
       </div>
     </div>
   </div>
@@ -56,6 +39,21 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue';
+
+
+// Add this method inside the <script setup> section
+function computedTextColor(bgColor) {
+  const color = bgColor.substring(1);
+  const rgb = parseInt(color, 16);
+  const r = (rgb >> 16) & 0xff;
+  const g = (rgb >> 8) & 0xff;
+  const b = (rgb >> 0) & 0xff;
+
+  const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+  return luma < 128 ? 'text-white' : 'text-black';
+}
+
 
 const props = defineProps({
   colors: {
@@ -113,8 +111,9 @@ const filteredColorGroups = computed(() => {
 <style scoped>
 .color-square {
   display: inline-flex;
-  margin: 5px;
+ /** margin: 5px; *.
 }
+
 .color-label {
   color: #ffffff;
   font-size: 12px;
@@ -126,10 +125,30 @@ const filteredColorGroups = computed(() => {
 }
 
 .toggle-checkbox:checked {
-  @apply transform translate-x-full border-green-500;
+  @apply transform translate-x-full border-purple-400;
 }
-.toggle-checkbox:checked + .toggle-label {
-  @apply bg-green-500;
+
+.toggle-checkbox:checked+.toggle-label {
+  @apply bg-purple-800;
 }
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(2rem, 1fr));
+  gap: 0rem;
+}
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+
 
 </style>

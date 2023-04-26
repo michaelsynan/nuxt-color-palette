@@ -1,16 +1,16 @@
 <template>
-  <div class="text-white bg-stone-800 p-2.5 rounded m-4 flex items-end space-x-4">
-    <button @click="generateColorsAndSave" class="py-2 px-4 bg-purple-800 hover:bg-purple-900 text-white font-semibold rounded shadow">Generate Colors</button>
+  <div class="text-white bg-stone-950 p-2 rounded m-4 flex items-end space-x-4">
+    <button @click="generateColorsAndSave" class="py-2 px-3 bg-purple-800 hover:bg-purple-900 rounded shadow text-sm">Generate</button>
     <div>
-      <label for="numBaseColors" class="block mb-1 text-sm text-stone-400">Number of Base Colors:</label>
-      <select v-model="numBaseColors" id="numBaseColors" class="w-full bg-gray-700 rounded p-2 shadow">
+      <label for="numBaseColors" class="block mb-1">Base Colors:</label>
+      <select v-model="numBaseColors" id="numBaseColors" class="w-full  bg-gray-700 rounded p-2 shadow">
         <option value="3">3</option>
         <option value="4">4</option>
         <option value="5">5</option>
       </select>
     </div>
     <div>
-      <label for="numShades" class="block mb-1 text-sm text-stone-400">Number of Shades:</label>
+      <label for="numShades" class="block mb-1">Shades:</label>
       <select v-model="numShades" id="numShades" class="w-full bg-gray-700 rounded p-2 shadow">
         <option value="1">1</option>
         <option value="2">2</option>
@@ -20,7 +20,7 @@
       </select>
     </div>
     <div>
-      <label for="colorScheme" class="block mb-1 text-sm text-stone-400">Color Scheme:</label>
+      <label for="colorScheme" class="block mb-1">Color Scheme:</label>
       <select v-model="colorScheme" id="colorScheme" class="w-full bg-gray-700 rounded p-2 shadow">
         <option value="triadic">Triadic</option>
         <option value="complementary">Complementary</option>
@@ -31,15 +31,16 @@
       </select>
     </div>
     <div>
-      <label for="initialColor" class="block mb-1 text-sm text-stone-400">Initial Color:</label>
+      <label for="initialColor" class="block mb-1">Initial Color:</label>
       <input v-model="userSelectedInitialColor" id="initialColor" type="color" class="w-full bg-gray-700 rounded p-2 shadow">
     </div>
     <div>
-      <input v-model="useSelectedInitialColor" id="useSelectedInitialColor" type="checkbox" class="w-full bg-gray-700 rounded p-2 shadow">
-      <label for="useSelectedInitialColor" class="ml-2 text-sm text-stone-400">Use selected initial color</label>
+      <input v-model="useSelectedInitialColor" id="useSelectedInitialColor" type="checkbox" class=" bg-gray-700 rounded p-2 shadow">
+      <label for="useSelectedInitialColor" class="ml-2">Use selected initial color</label>
     </div>
   </div>
 </template>
+
 <script setup>
 import { ref, defineEmits, onMounted, watchEffect } from 'vue';
 import chroma from 'chroma-js';
@@ -50,7 +51,7 @@ const numShades = ref(1);
 const colorScheme = ref('triadic');
 const emit = defineEmits(['color-scheme-generated']);
 const useSelectedInitialColor = ref(false);
-const userSelectedInitialColor = ref('#000000');
+const userSelectedInitialColor = ref('#e01b24');
 const regenerate = ref(false);
 
 
