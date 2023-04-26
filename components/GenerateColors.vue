@@ -32,12 +32,16 @@
     </div>
     <div>
       <label for="initialColor" class="block mb-1 text-sm text-stone-400">Initial Color:</label>
-      <input v-model="initialColor" id="initialColor" type="color" class="w-full bg-gray-700 rounded p-2 shadow">
+      <input v-model="userSelectedInitialColor" id="initialColor" type="color" class="w-full bg-gray-700 rounded p-2 shadow">
+    </div>
+    <div>
+      <input v-model="useSelectedInitialColor" id="useSelectedInitialColor" type="checkbox" class="w-full bg-gray-700 rounded p-2 shadow">
+      <label for="useSelectedInitialColor" class="ml-2 text-sm text-stone-400">Use selected initial color</label>
     </div>
   </div>
 </template>
 <script setup>
-import { ref, defineEmits, onMounted } from 'vue';
+import { ref, defineEmits, onMounted, watchEffect } from 'vue';
 import chroma from 'chroma-js';
 import { generateColors, generateBaseColors } from '@/config/generateColors.js';
 
@@ -45,6 +49,8 @@ const numBaseColors = ref(3);
 const numShades = ref(1);
 const colorScheme = ref('triadic');
 const emit = defineEmits(['color-scheme-generated']);
+const useSelectedInitialColor = ref(false);
+const userSelectedInitialColor = ref('#000000');
 
 /* Generate random initial color */
 function randomHexColor() {
@@ -53,15 +59,26 @@ function randomHexColor() {
 }
 
 const initialColor = ref(randomHexColor());
-/* end generate random initial color */
 
+const firstColor = ref(initialColor.value);
+
+watchEffect(() => {
+  if (!useSelectedInitialColor.value) {
+    firstColor.value = initialColor.value;
+  } else {
+    firstColor.value = userSelectedInitialColor.value;
+  }
+});
 
 async function generateColorsAndSave() {
-  const initialColorValue = initialColor.value;
+  if (!useSelectedInitialColor.value) {
+    initialColor.value = randomHexColor();
+  }
+  const initialColorValue = firstColor.value;
   const initialColorObject = chroma(initialColorValue);
   console.log('Initial Color:', initialColorValue);
 
-  const baseColors = generateBaseColors(colorScheme.value, numBaseColors.value);
+  const baseColors = generateBaseColors(colorScheme.value, numBaseColors.value, firstColor.value);
   const orderedOutput = await generateColors(
     numBaseColors.value,
     numShades.value,
@@ -74,9 +91,10 @@ async function generateColorsAndSave() {
   emit('color-scheme-generated', colorSchemeJson);
 }
 
+
+
 onMounted(() => {
   generateColorsAndSave();
 });
-
 
 </script>

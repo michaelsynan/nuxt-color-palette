@@ -24,8 +24,8 @@ function generateShades(color, numShades) {
   return shades;
 }
 
-export function generateBaseColors(colorScheme, numBaseColors) { // Added numBaseColors as an argument
-  const baseColor = randomHexColor();
+export function generateBaseColors(colorScheme, numBaseColors, initialColor) {
+  const baseColor = initialColor || randomHexColor();
   const baseColors = [baseColor];
 
   const scale = chroma.scale([baseColor]).mode('hsl');
