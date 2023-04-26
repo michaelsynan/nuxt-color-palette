@@ -24,7 +24,7 @@ function generateShades(color, numShades) {
   return shades;
 }
 
-function generateBaseColors(colorScheme, numBaseColors, initialColor) {
+export function generateBaseColors(colorScheme, numBaseColors, initialColor) {
   const baseColor = initialColor || randomHexColor();
   const baseColors = [baseColor];
 
@@ -41,18 +41,10 @@ function generateBaseColors(colorScheme, numBaseColors, initialColor) {
       }
       break;
     case 'complementary':
-      baseColors.push(chroma(baseColor).set('hsl.h', '+180').hex());
-      for (let i = 2; i < numBaseColors; i++) {
-        const lightness = (i / (numBaseColors - 1)) * 100;
-        baseColors.push(chroma(baseColor).set('hsl.l', `${lightness}%`).hex());
-      }
-      break;
     case 'splitComplementary':
-      baseColors.push(chroma(baseColor).set('hsl.h', '+150').hex());
-      baseColors.push(chroma(baseColor).set('hsl.h', '+210').hex());
-      for (let i = 3; i < numBaseColors; i++) {
-        const lightness = (i / (numBaseColors - 1)) * 100;
-        baseColors.push(chroma(baseColor).set('hsl.l', `${lightness}%`).hex());
+      for (let i = 1; i < numBaseColors; i++) {
+        const complementaryAngle = (360 / (numBaseColors - 1)) * i;
+        baseColors.push(chroma(baseColor).set('hsl.h', `+${complementaryAngle}`).hex());
       }
       break;
     // Add other color schemes here
@@ -66,7 +58,6 @@ function generateBaseColors(colorScheme, numBaseColors, initialColor) {
 
   return baseColors;
 }
-
 
 export function generateColors(numBaseColors, numShades, colorScheme, baseColors) {
 //  const baseColors = generateBaseColors(colorScheme, numBaseColors);
