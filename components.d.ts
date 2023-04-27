@@ -9,6 +9,9 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    IMdiArrow: typeof import('~icons/mdi/arrow')['default']
+    IMdiArrowDown: typeof import('~icons/mdi/arrow-down')['default']
+    IMdiArrowUp: typeof import('~icons/mdi/arrow-up')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

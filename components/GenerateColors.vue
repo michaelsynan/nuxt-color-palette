@@ -1,13 +1,13 @@
 <template>
-  <div class="text-white bg-stone-950 p-2 rounded m-4 flex flex-col items-center space-y-4">
-        <button @click="generateColorsAndSave" class="py-2 px-3 bg-purple-800 hover:bg-purple-900 rounded shadow text-sm">Generate</button>
-    <button @click="toggleAdvancedOptions" class="p-1.5 rounded-full bg-purple-800 hover:bg-purple-900 rounded shadow text-sm">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mx-auto" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10 12a2 2 0 110-4 2 2 0 010 4zm-7-2a7 7 0 1114 0 7 7 0 01-14 0z" clip-rule="evenodd" />
-        <path d="M9 11h2v3H9z" />
-      </svg>
+  <div class="text-white p-2 rounded m-4 flex flex-col items-center space-y-2 my-8 fixed w-full z-50">
+    <button @click="generateColorsAndSave" class="py-3 px-6 bg-purple-800 hover:bg-purple-900 rounded shadow text-xl">Generate</button>
+    <button @click="toggleAdvancedOptions" class="p-1.5 rounded-full bg-purple-400 hover:bg-purple-900 shadow text-sm animate-pluse">
+      <i-mdi-arrow-down v-if="!showAdvancedOptions" />
+      <i-mdi-arrow-up v-if="showAdvancedOptions" />
     </button>
-    <div v-if="showAdvancedOptions" class="mt-2 flex flex-cols space-x-4">
+    <transition name="slide">
+      <div v-if="showAdvancedOptions" class="mt-2 flex flex-cols space-x-4 bg-stone-950 p-4 rounded-lg">
+     
             <div class="flex flex-wrap justify-center flex-cols">
         <label for="numBaseColors" class="block mb-1">Base Colors:</label>
         <select v-model="numBaseColors" id="numBaseColors" class="w-full  bg-gray-700 rounded p-2 shadow">
@@ -47,9 +47,56 @@
           <label for="useSelectedInitialColor" class="ml-2">Use selected initial color</label>
         </div>
       </div>
+      <div class="space-x-4 w-10 align-middle select-none transition duration-200 ease-in mb-4">
+    <label for="toggle" class="block mb-2 text-sm text-stone-400">Toggle Shades:</label>
+    <div>
+      <input
+        type="checkbox"
+        @click="toggleShades"
+        name="toggle"
+        id="toggle"
+        class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out"
+      />
+      <label
+        for="toggle"
+        class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 ease-in-out"
+      ></label>
     </div>
   </div>
+      </div>
+    </transition>
+  </div>
 </template>
+
+<style scoped>
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+
+.toggle-checkbox:checked {
+  @apply transform translate-x-full border-purple-400;
+}
+
+.toggle-checkbox:checked+.toggle-label {
+  @apply bg-purple-800;
+}
+
+
+</style>
 
 <script setup>
 import { ref, defineEmits, onMounted, watchEffect } from 'vue';
@@ -59,10 +106,12 @@ import { generateColors, generateBaseColors } from '@/config/generateColors.js';
 const numBaseColors = ref(3);
 const numShades = ref(1);
 const colorScheme = ref('triadic');
-const emit = defineEmits(['color-scheme-generated']);
+const emit = defineEmits(['color-scheme-generated', "update:show-shades"]);
 const useSelectedInitialColor = ref(false);
 const userSelectedInitialColor = ref('#e01b24');
 const showAdvancedOptions = ref(false);
+const showShades = ref(true);
+
 
 function toggleAdvancedOptions() {
   showAdvancedOptions.value = !showAdvancedOptions.value;
@@ -150,5 +199,13 @@ async function generateColorsAndSave() {
 onMounted(() => {
   generateColorsAndSave();
 });
+
+
+
+function toggleShades() {
+  showShades.value = !showShades.value;
+  emit("update:show-shades", showShades.value);
+}
+
 
 </script>

@@ -4,12 +4,13 @@ import { ref } from 'vue';
 export default {
   setup() {
     const colorSchemeJson = ref({});
-
+    const showShades = ref(true); // Add this line to define the showShades ref
     const updateColorSchemeJson = (newColorSchemeJson) => {
       colorSchemeJson.value = newColorSchemeJson;
     };
 
     return {
+      showShades, // Add this line to return the showShades ref
       colorSchemeJson,
       updateColorSchemeJson,
     };
@@ -23,10 +24,9 @@ export default {
     <GenerateColors @color-scheme-generated="updateColorSchemeJson" />
     <div class="flex space-x-2 mx-4">
     
-    <ExportPalette :palette="colorSchemeJson" />
-    <CopyJson :palette="colorSchemeJson" />
+
     </div>
-    <ColorPalette :colors="colorSchemeJson" />
+    <ColorPalette :colors="colorSchemeJson" :showShades="showShades" />
   </div>
 </template>
 

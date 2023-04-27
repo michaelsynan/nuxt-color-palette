@@ -1,12 +1,11 @@
 <template>
-  <div class="h-full">
-    <div class="inline-block w-10 align-middle select-none transition duration-200 ease-in mb-4 fixed bottom-10 left-10">
-      <label for="toggle" class="block mb-2 text-sm text-stone-400">Toggle Shades:</label>
-      <input type="checkbox" @change="toggleShades" name="toggle" id="toggle"
-        class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" />
-      <label for="toggle"
-        class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 ease-in-out"></label>
-    </div>
+  <div class="h-full p-40">
+    <div class="space-x-4 w-10 align-middle select-none transition duration-200 ease-in mb-4 fixed bottom-10 left-10 flex flex-cols">
+
+  <ExportPalette :palette="colorSchemeJson" />
+  <CopyJson :palette="colorSchemeJson" />
+</div>
+
     <div class="flex items-center justify-center h-full py-6">
       
       <div v-for="(group, groupName) in filteredColorGroups" :key="groupName" class="m-4 max-w-[200px]">
@@ -38,7 +37,7 @@
 
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, defineProps } from 'vue';
 
 
 // Add this method inside the <script setup> section
@@ -60,9 +59,12 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  showShades: {
+    type: Boolean,
+    required: true,
+  },
 });
 
-const showShades = ref(true);
 const colorGroups = ref({});
 
 const updateColorGroups = () => {
@@ -86,12 +88,8 @@ watch(
   }
 );
 
-function toggleShades() {
-  showShades.value = !showShades.value;
-}
-
 const filteredColorGroups = computed(() => {
-  if (showShades.value) {
+  if (props.showShades) {
     return colorGroups.value;
   }
 
