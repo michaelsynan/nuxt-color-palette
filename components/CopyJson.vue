@@ -1,7 +1,7 @@
 <!-- components/CopyPaletteButton.vue -->
 <template>
   <div>
-    <button @click="copyPalette" class="py-1.5 px-3 bg-teal-500 hover:bg-teal-600 text-white text-sm rounded">Copy Palette</button>
+    <button @click="copyPalette" class="py-1.5 px-3 bg-teal-500 hover:bg-teal-600 text-white text-sm rounded">Copy JSON</button>
     <div v-if="copied" class="text-sm text-green-500 mt-2 absolute">Copied to clipboard!</div>
   </div>
 </template>
