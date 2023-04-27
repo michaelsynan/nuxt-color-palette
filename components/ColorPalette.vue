@@ -134,7 +134,7 @@ const filteredColorGroups = computed(() => {
 
 .color-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(2rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(18px , 1fr));
   gap: 0rem;
 }
 
