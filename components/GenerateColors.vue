@@ -1,4 +1,9 @@
 <template>
+
+ <!-- <ExportPalette v-model="colorSchemeJson" /> -->
+
+
+
   <div class="text-white p-2 rounded m-4 flex flex-col items-center space-y-2 my-8 fixed w-full z-50">
     <div class="flex flex-row space-x-2">
       <button @click="generateColorsAndSave"
@@ -15,7 +20,7 @@
         </button>
         <div
           class="opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto flex flex-row space-x-2 absolute left-10 bg-stone-900 bg-inherit rounded-r transition duration-300">
-          <div class="py-2.5 px-2"><span>Json</span></div>
+          <div class="py-2.5 px-2"><span> <CopyJson :colorSchemeJson="palette" /></span></div>
           <div class="py-2.5 px-2"><span>Tailwind</span></div>
         </div>
       </div>
@@ -77,6 +82,7 @@
       </div>
     </transition>
   </div>
+  
 </template>
 
 <style scoped>
@@ -129,16 +135,38 @@
 import { ref, defineEmits, onMounted, watchEffect } from 'vue';
 import chroma from 'chroma-js';
 import { generateColors, generateBaseColors } from '@/config/generateColors.js';
+import { defineProps } from 'vue';
+
+
+
+
+const emit = defineEmits(['update:colorSchemeJson', "update:showShades"]);
+
+
+const props = defineProps({
+  colors: {
+    type: Object,
+    required: true,
+  },
+});
 
 const numBaseColors = ref(3);
 const numShades = ref(1);
 const colorScheme = ref('triadic');
-const emit = defineEmits(['color-scheme-generated', "update:showShades"]);
+
 const useSelectedInitialColor = ref(false);
 const userSelectedInitialColor = ref('#e01b24');
 const showAdvancedOptions = ref(false);
 const showShades = ref(false);
 
+const colorSchemeJson = ref({}); // Add this line to create a new reactive variable
+provide('colorSchemeJson', colorSchemeJson);
+
+const palette = ref({});
+palette.value = colorSchemeJson;
+const onColorSchemeGenerated = (colorSchemeJson) => {
+  palette.value = colorSchemeJson;
+};
 
 function toggleAdvancedOptions() {
   showAdvancedOptions.value = !showAdvancedOptions.value;
@@ -220,7 +248,8 @@ async function generateColorsAndSave() {
   );
   const colorSchemeJson = orderedOutput;
   console.log('Color scheme JSON:', colorSchemeJson);
-  emit('color-scheme-generated', colorSchemeJson);
+  palette.value = colorSchemeJson;
+emit('color-scheme-generated', colorSchemeJson);
 }
 
 onMounted(() => {

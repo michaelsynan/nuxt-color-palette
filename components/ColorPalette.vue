@@ -2,20 +2,24 @@
   <div class="h-screen w-screen overflow-hidden">
     <div
       class="space-x-4 w-10 align-middle select-none transition duration-200 ease-in mb-4 fixed bottom-10 left-10 flex flex-cols">
-      <ExportPalette :palette="colorSchemeJson" />
-      <CopyJson :palette="colorSchemeJson" />
+
+      <!--
+      <ExportPalette :palette="props.colors" />
+      <CopyJson :palette="props.colors" />
+      -->
     </div>
-    <div class="grid grid-cols-fit grid-rows-fit h-full">
-      <div v-for="(group, groupName) in filteredColorGroups" :key="groupName" class="m-1">
+    <div class="grid grid-cols-fit grid-rows-fit flex-grow h-full">
+      <div id="color-container" v-for="(group, groupName) in filteredColorGroups" :key="groupName"
+        class="m-1 flex-grow flex-shrink-0">
         <h3 class="text-lg capitalize hidden">{{ groupName }}</h3>
-        <div class="flex flex-wrap h-full">
-          <div v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => key.endsWith('-500'))"
-            :key="colorKey" class="color-square base-color flex flex-col h-full items-center justify-center flex-grow"
-            :style="{ backgroundColor: colorValue }">
-            <span class="color-label font-bold opacity-70" :class="computedTextColor(colorValue)">{{ colorValue }}</span>
-          </div>
+
+        <div v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => key.endsWith('-500'))"
+          :key="colorKey" class="color-square base-color items-center justify-center flex-grow flex-shrink-0"
+          :style="{ backgroundColor: colorValue }">
+          <span class="color-label font-bold opacity-70" :class="computedTextColor(colorValue)">{{ colorValue }}</span>
         </div>
-        <div class="flex -mt-40 flex-grow h-40">
+
+        <div class="flex flex-grow h-40">
           <transition name="fade"
             v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => !key.endsWith('-500'))"
             :key="colorKey">
@@ -30,13 +34,9 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, computed, watch, defineProps, onMounted } from 'vue';
 
-
-
-// Add this method inside the <script setup> section
 function computedTextColor(bgColor) {
   const color = bgColor.substring(1);
   const rgb = parseInt(color, 16);
@@ -48,7 +48,6 @@ function computedTextColor(bgColor) {
 
   return luma < 128 ? 'text-white' : 'text-black';
 }
-
 
 const props = defineProps({
   colors: {
@@ -97,7 +96,6 @@ watch(
   }
 );
 
-
 const filteredColorGroups = computed(() => {
   if (props.showShades) {
     return colorGroups.value;
@@ -136,8 +134,6 @@ console.log('showShades from ColorPalette:' + props.showShades)
 .toggle-checkbox:checked+.toggle-label {
   @apply bg-purple-800;
 }
-
-
 
 .fade-enter-active,
 .fade-leave-active {

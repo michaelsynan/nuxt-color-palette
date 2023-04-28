@@ -1,34 +1,46 @@
-<!-- components/CopyPaletteButton.vue -->
+<!-- components/CopyJson.vue -->
 <template>
   <div>
-    <button @click="copyPalette" class="py-1.5 px-3 bg-teal-500 hover:bg-teal-600 text-white text-sm rounded">Copy JSON</button>
+    <button @click="copyPalette" class=" text-white text-sm rounded min-w-max">Copy JSON</button>
     <div v-if="copied" class="text-sm text-green-500 mt-2 absolute">Copied to clipboard!</div>
   </div>
 </template>
 
 <script>
+import { ref, watch, inject } from 'vue';
+
 export default {
   props: {
-    palette: {
+    colorSchemeJson: {
       type: Object,
       default: () => ({}),
     },
   },
-  data() {
-    return {
-      copied: false,
-    };
-  },
-  methods: {
-    copyPalette() {
-      const jsonText = JSON.stringify(this.palette, null, 2);
+  setup(props) {
+    const copied = ref(false);
+
+    watch(
+      () => props.colorSchemeJson,
+      (newColors) => {
+        console.log('New colors:', newColors);
+      }
+    );
+
+    function copyPalette() {
+      console.log('console log from copyjson:', props.colorSchemeJson);
+      const jsonText = JSON.stringify(props.colorSchemeJson, null, 2);
       navigator.clipboard.writeText(jsonText).then(() => {
-        this.copied = true;
+        copied.value = true;
         setTimeout(() => {
-          this.copied = false;
+          copied.value = false;
         }, 3000);
       });
-    },
+    }
+
+    return {
+      copied,
+      copyPalette,
+    };
   },
 };
 </script>
