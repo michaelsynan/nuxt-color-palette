@@ -1,35 +1,30 @@
 <template>
-  <div class="h-full p-40">
-    <div class="space-x-4 w-10 align-middle select-none transition duration-200 ease-in mb-4 fixed bottom-10 left-10 flex flex-cols">
-
-  <ExportPalette :palette="colorSchemeJson" />
-  <CopyJson :palette="colorSchemeJson" />
-</div>
-
-    <div class="flex items-center justify-center h-full py-6">
-      
-      <div v-for="(group, groupName) in filteredColorGroups" :key="groupName" class="m-4 max-w-[200px]">
+  <div class="h-screen w-screen overflow-hidden">
+    <div
+      class="space-x-4 w-10 align-middle select-none transition duration-200 ease-in mb-4 fixed bottom-10 left-10 flex flex-cols">
+      <ExportPalette :palette="colorSchemeJson" />
+      <CopyJson :palette="colorSchemeJson" />
+    </div>
+    <div class="grid grid-cols-fit grid-rows-fit h-full">
+      <div v-for="(group, groupName) in filteredColorGroups" :key="groupName" class="m-1">
         <h3 class="text-lg capitalize hidden">{{ groupName }}</h3>
-
-        <div class="flex flex-wrap">
+        <div class="flex flex-wrap h-full">
           <div v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => key.endsWith('-500'))"
-            :key="colorKey" class="color-square base-color h-32 w-32 flex flex-col justify-between items-center flex-grow my-4"
+            :key="colorKey" class="color-square base-color flex flex-col h-full items-center justify-center flex-grow"
             :style="{ backgroundColor: colorValue }">
-<span class="color-label font-bold mt-auto" :class="computedTextColor(colorValue)">{{ colorValue }}</span>
-                    </div>
-        </div>
-        <div class="color-grid">
-        <transition name="fade" v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => !key.endsWith('-500'))"
-          :key="colorKey">
-          <div v-if="showShades" :class="[
-                'color-square',
-                'h-8 w-8',
-                'flex flex-col justify-between items-center text-xs'
-              ]" :style="{ backgroundColor: colorValue }">
+            <span class="color-label font-bold opacity-70" :class="computedTextColor(colorValue)">{{ colorValue }}</span>
           </div>
-        </transition>
-      </div>
-
+        </div>
+        <div class="flex -mt-40 flex-grow h-40">
+          <transition name="fade"
+            v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => !key.endsWith('-500'))"
+            :key="colorKey">
+            <div v-if="showShades" class="color-square flex items-center justify-center h-full w-full"
+              :style="{ backgroundColor: colorValue }">
+              <span class="text-xs hidden">{{ colorValue }}</span>
+            </div>
+          </transition>
+        </div>
       </div>
     </div>
   </div>
@@ -37,7 +32,8 @@
 
 
 <script setup>
-import { ref, computed, watch, defineProps } from 'vue';
+import { ref, computed, watch, defineProps, onMounted } from 'vue';
+
 
 
 // Add this method inside the <script setup> section
@@ -61,6 +57,7 @@ const props = defineProps({
   },
   showShades: {
     type: Boolean,
+    default: false,
     required: true,
   },
 });
@@ -81,12 +78,25 @@ const updateColorGroups = () => {
 
 updateColorGroups();
 
+onMounted(() => {
+  console.log('showShades from ColorPalette (onMounted):', props.showShades);
+});
+
+
 watch(
   () => props.colors,
   () => {
     updateColorGroups();
   }
 );
+
+watch(
+  () => props.showShades,
+  (newVal) => {
+    console.log('showShades from ColorPalette (updated):', newVal);
+  }
+);
+
 
 const filteredColorGroups = computed(() => {
   if (props.showShades) {
@@ -104,23 +114,20 @@ const filteredColorGroups = computed(() => {
   }
   return filteredGroups;
 });
+
+console.log('showShades from ColorPalette:' + props.showShades)
 </script>
 
 <style scoped>
-.color-square {
-  display: inline-flex;
- /** margin: 5px; *.
+.grid-cols-fit {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
-.color-label {
-  color: #ffffff;
-  font-size: 12px;
+.grid-rows-fit {
+  grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
 }
 
-.base-color {
-  /* position: absolute; */
-  z-index: 1;
-}
+
 
 .toggle-checkbox:checked {
   @apply transform translate-x-full border-purple-400;
@@ -130,11 +137,6 @@ const filteredColorGroups = computed(() => {
   @apply bg-purple-800;
 }
 
-.color-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18px , 1fr));
-  gap: 0rem;
-}
 
 
 .fade-enter-active,
@@ -146,7 +148,4 @@ const filteredColorGroups = computed(() => {
 .fade-leave-to {
   opacity: 0;
 }
-
-
-
 </style>

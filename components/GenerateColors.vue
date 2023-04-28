@@ -1,74 +1,112 @@
 <template>
   <div class="text-white p-2 rounded m-4 flex flex-col items-center space-y-2 my-8 fixed w-full z-50">
-    <button @click="generateColorsAndSave" class="py-3 px-6 bg-purple-800 hover:bg-purple-900 rounded shadow text-xl">Generate</button>
-    <button @click="toggleAdvancedOptions" class="p-1.5 rounded-full bg-purple-400 hover:bg-purple-900 shadow text-sm animate-pluse">
-      <i-mdi-arrow-down v-if="!showAdvancedOptions" />
-      <i-mdi-arrow-up v-if="showAdvancedOptions" />
-    </button>
-    <transition name="slide">
-      <div v-if="showAdvancedOptions" class="mt-2 flex flex-cols space-x-4 bg-stone-950 p-4 rounded-lg">
-     
-            <div class="flex flex-wrap justify-center flex-cols">
-        <label for="numBaseColors" class="block mb-1">Base Colors:</label>
-        <select v-model="numBaseColors" id="numBaseColors" class="w-full  bg-gray-700 rounded p-2 shadow">
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-      </div>
-      <div class="flex flex-wrap justify-center flex-cols">
-        <label for="numShades" class="block mb-1">Shades:</label>
-        <select v-model="numShades" id="numShades" class="w-full bg-gray-700 rounded p-2 shadow">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-      </div>
-      <div class="flex flex-wrap justify-center flex-cols">
-        <label for="colorScheme" class="block mb-1">Color Scheme:</label>
-        <select v-model="colorScheme" id="colorScheme" class="w-full bg-gray-700 rounded p-2 shadow">
-          <option value="triadic">Triadic</option>
-          <option value="complementary">Complementary</option>
-          <option value="splitComplementary">Split Complementary</option>
-          <option value="analogous">Analogous</option>
-          <option value="square">Square</option>
-          <option value="tetradic">Tetradic</option>
-        </select>
-      </div>
-      <div>
-        <label for="initialColor" class="block mb-1">Initial Color:</label>
-        <input v-model="userSelectedInitialColor" id="initialColor" type="color" class="w-full bg-gray-700 rounded p-2 shadow">
-      </div>
-      <div class="w-full flex flex-col justify-end">
-        <div class="flex items-center">
-          <input v-model="useSelectedInitialColor" id="useSelectedInitialColor" type="checkbox" class="bg-gray-700 rounded p-2 shadow">
-          <label for="useSelectedInitialColor" class="ml-2">Use selected initial color</label>
+    <div class="flex flex-row space-x-2">
+      <button @click="generateColorsAndSave"
+        class="py-2.5 px-5 bg-stone-800 hover:bg-stone-900 rounded shadow text-base font-bold group"><span
+          class="group-hover:opacity-80">Generate</span></button>
+      <button @click="toggleAdvancedOptions" class="py-2.5 px-2 bg-stone-800 hover:bg-stone-900 rounded shadow text-xl">
+        <i-mdi-arrow-down v-if="!showAdvancedOptions" class="group-hover:opacity-80 group" />
+        <i-mdi-arrow-up v-if="showAdvancedOptions" class="group-hover:opacity-80 group" />
+      </button>
+      <div class="group flex flex-row relative  shadow transition duration-300">
+        <button
+          class="z-10 flex items-center justify-center py-2.5 px-2 rounded-l rounded-r group-hover:rounded-r-none transition duration-300 bg-stone-800 hover:bg-stone-900">
+          <i-mdi-floppy @click="copyPalette" class="text-xl group-hover:opacity-80" />
+        </button>
+        <div
+          class="opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto flex flex-row space-x-2 absolute left-10 bg-stone-900 bg-inherit rounded-r transition duration-300">
+          <div class="py-2.5 px-2"><span>Json</span></div>
+          <div class="py-2.5 px-2"><span>Tailwind</span></div>
         </div>
       </div>
-      <div class="space-x-4 w-10 align-middle select-none transition duration-200 ease-in mb-4">
-    <label for="toggle" class="block mb-2 text-sm text-stone-400">Toggle Shades:</label>
-    <div>
-      <input
-        type="checkbox"
-        @click="toggleShades"
-        name="toggle"
-        id="toggle"
-        class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out"
-      />
-      <label
-        for="toggle"
-        class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 ease-in-out"
-      ></label>
     </div>
-  </div>
+    <transition name="slide">
+      <div v-if="showAdvancedOptions"
+        class="mt-2 flex flex-row items-end space-x-4 bg-stone-950 bg-opacity-80 p-4 rounded-lg pr-10">
+
+        <div class="flex flex-wrap justify-center flex-col">
+          <label for="numBaseColors" class="block mb-1">Base Colors:</label>
+          <select v-model="numBaseColors" id="numBaseColors" class="w-full bg-gray-700 rounded p-2 shadow">
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+        <div class="flex flex-wrap justify-center flex-col">
+          <label for="numShades" class="block mb-1">Shades:</label>
+          <select v-model="numShades" id="numShades" class="w-full bg-gray-700 rounded p-2 shadow">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+        <div class="flex flex-wrap justify-center flex-col">
+          <label for="colorScheme" class="block mb-1">Color Scheme:</label>
+          <select v-model="colorScheme" id="colorScheme" class="w-full bg-gray-700 rounded p-2 shadow">
+            <option value="triadic">Triadic</option>
+            <option value="complementary">Complementary</option>
+            <option value="splitComplementary">Split Complementary</option>
+            <option value="analogous">Analogous</option>
+            <option value="square">Square</option>
+            <option value="tetradic">Tetradic</option>
+          </select>
+        </div>
+        <div class="flex flex-wrap justify-center flex-col items-end">
+          <label for="initialColor" class="block mb-1">Initial Color:</label>
+          <input v-model="userSelectedInitialColor" id="initialColor" type="color" class="bg-gray-700 rounded p-2 shadow">
+        </div>
+        <div class="flex items-center">
+          <span class="text-xs text-stone-400">Random</span>
+          <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in mx-4">
+            <input v-model="useSelectedInitialColor" id="useSelectedInitialColor" type="checkbox"
+              class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" />
+            <label for="useSelectedInitialColor"
+              class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 ease-in-out"></label>
+          </div>
+          <span class="text-xs text-stone-400">Select</span>
+        </div>
+        <div class="w-10 select-none transition duration-200 ease-in">
+          <label for="toggle" class="block text-xs text-stone-400 mb-2">Shades:</label>
+          <div class="flex justify-center">
+            <i-mdi-eye v-if="!showShades" @click="toggleShades" class="cursor-pointer text-xl" />
+            <i-mdi-eye-off v-if="showShades" @click="toggleShades" class="cursor-pointer text-xl" />
+          </div>
+        </div>
       </div>
     </transition>
   </div>
 </template>
 
 <style scoped>
+.toggle-label {
+  width: 100%;
+}
+
+.toggle-checkbox-shades:checked {
+  @apply transform translate-x-4 border-purple-400;
+}
+
+.toggle-checkbox-shades:checked+.toggle-label-shades {
+  @apply bg-purple-800;
+}
+
+.toggle-label-shades {
+  width: 50%;
+}
+
+
+.toggle-checkbox:checked {
+  @apply transform translate-x-full border-purple-400;
+}
+
+.toggle-checkbox:checked+.toggle-label {
+  @apply bg-purple-800;
+}
+
+
+
 .slide-enter-active,
 .slide-leave-active {
   transition: all 0.3s ease;
@@ -85,17 +123,6 @@
   transform: translateY(0);
   opacity: 1;
 }
-
-
-.toggle-checkbox:checked {
-  @apply transform translate-x-full border-purple-400;
-}
-
-.toggle-checkbox:checked+.toggle-label {
-  @apply bg-purple-800;
-}
-
-
 </style>
 
 <script setup>
@@ -106,11 +133,11 @@ import { generateColors, generateBaseColors } from '@/config/generateColors.js';
 const numBaseColors = ref(3);
 const numShades = ref(1);
 const colorScheme = ref('triadic');
-const emit = defineEmits(['color-scheme-generated', "update:show-shades"]);
+const emit = defineEmits(['color-scheme-generated', "update:showShades"]);
 const useSelectedInitialColor = ref(false);
 const userSelectedInitialColor = ref('#e01b24');
 const showAdvancedOptions = ref(false);
-const showShades = ref(true);
+const showShades = ref(false);
 
 
 function toggleAdvancedOptions() {
@@ -152,7 +179,7 @@ async function generateColorsAndSave() {
     ];
     colorScheme.value =
       randomColorSchemeOptions[
-        Math.floor(Math.random() * randomColorSchemeOptions.length)
+      Math.floor(Math.random() * randomColorSchemeOptions.length)
       ];
   } else {
     selectedInitialColor = randomHexColor();
@@ -204,7 +231,8 @@ onMounted(() => {
 
 function toggleShades() {
   showShades.value = !showShades.value;
-  emit("update:show-shades", showShades.value);
+  emit("update:showShades", showShades.value);
+  console.log('showShades:' + showShades.value)
 }
 
 

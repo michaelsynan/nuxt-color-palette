@@ -4,15 +4,22 @@ import { ref } from 'vue';
 export default {
   setup() {
     const colorSchemeJson = ref({});
-    const showShades = ref(true); // Add this line to define the showShades ref
+    const showShades = ref(true); 
     const updateColorSchemeJson = (newColorSchemeJson) => {
       colorSchemeJson.value = newColorSchemeJson;
     };
 
+    const updateShowShades = (newShowShades) => {
+      showShades.value = newShowShades;
+    };
+
+    console.log('showShades from index:' + showShades.value)
+
     return {
-      showShades, // Add this line to return the showShades ref
+      showShades,
       colorSchemeJson,
       updateColorSchemeJson,
+      updateShowShades
     };
   },
 };
@@ -21,13 +28,10 @@ export default {
 
 <template>
   <div class="h-full">
-    <GenerateColors @color-scheme-generated="updateColorSchemeJson" />
+    <GenerateColors @color-scheme-generated="updateColorSchemeJson" @update:showShades="updateShowShades" />
     <div class="flex space-x-2 mx-4">
-    
-
     </div>
-    <ColorPalette :colors="colorSchemeJson" :showShades="showShades" />
-  </div>
+    <ColorPalette :colors="colorSchemeJson" :showShades="showShades" />  </div>
 </template>
 
 
