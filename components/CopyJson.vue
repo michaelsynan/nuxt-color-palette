@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { ref, watchEffect, inject } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 export default {
   props: {

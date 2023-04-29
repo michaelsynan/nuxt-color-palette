@@ -10,12 +10,12 @@
         </div>
 
         <div class="flex flex-row -mt-10 h-10 md:-mt-20 md:h-20">
-          <transition name="fade" mode="out-in" v-for="([colorKey, colorValue]) in non500Colors(group)" :key="colorKey">
-            <div v-if="showShades" class="color-square flex items-center justify-center h-full w-full"
-              :style="{ backgroundColor: colorValue }">
-              <span class="text-xs hidden">{{ colorValue }}</span>
-            </div>
-          </transition>
+          <!-- Removed the <transition> component and moved the v-for directive to the inner <div> element -->
+          <div v-for="([colorKey, colorValue]) in non500Colors(group)" :key="colorKey"
+               v-if="showShades" class="color-square flex items-center justify-center h-full w-full"
+               :style="{ backgroundColor: colorValue }">
+            <span class="text-xs hidden">{{ colorValue }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -103,8 +103,6 @@ const filteredColorGroups = computed(() => {
   grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
 }
 
-
-
 .toggle-checkbox:checked {
   @apply transform translate-x-full border-purple-400;
 }
@@ -113,13 +111,5 @@ const filteredColorGroups = computed(() => {
   @apply bg-purple-800;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
+/* Removed the .fade-* CSS classes */
 </style>

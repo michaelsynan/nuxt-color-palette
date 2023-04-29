@@ -10,9 +10,10 @@
   },
   "devDependencies": {
     "@iconify/json": "^2.2.36",
+    "@nuxt/devtools": "^0.4.3",
     "@nuxtjs/tailwindcss": "^6.6.5",
     "autoprefixer": "^10.4.13",
-    "nuxt": "^3.3.1",
+    "nuxt": "^3.4.3",
     "postcss": "^8.4.21",
     "unplugin-icons": "^0.15.3",
     "unplugin-vue-components": "^0.24.1"
@@ -25,8 +26,6 @@
     "@pinia/nuxt": "^0.4.7",
     "@vueuse/core": "^10.1.0",
     "chroma-js": "^2.4.2",
-    "pinia": "^2.0.33",
-    "tinycolor2": "^1.6.0",
-    "vue3-colorpicker": "^2.1.2"
+    "pinia": "^2.0.33"
   }
 }

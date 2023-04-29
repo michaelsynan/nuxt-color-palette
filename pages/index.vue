@@ -27,8 +27,6 @@ export default {
 <template>
   <div class="h-full">
     <GenerateColors @color-scheme-generated="updateColorSchemeJson" @update:showShades="updateShowShades" />
-    <div class="flex space-x-2 mx-4">
-    </div>
     <ColorPalette :colors="colorSchemeJson" :showShades="showShades" />
   </div>
 </template>

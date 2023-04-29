@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white p-2 rounded m-4 flex flex-col items-center space-y-2 my-4 md:my-8 fixed w-full z-50">
+  <div class="text-white p-2 rounded m-2 md:m-4 flex flex-col items-center space-y-2 my-4 md:my-8 fixed w-min md:w-full z-50">
     <div class="flex flex-row space-x-1 md:space-x-2">
       <button @click="generateColorsAndSave"
         class="py-2.5 px-5 bg-stone-800 hover:bg-stone-900 rounded shadow text-base font-bold group"><span
@@ -20,7 +20,7 @@
           <i-mdi-floppy @click="copyPalette" class="text-xl group-hover:opacity-80" />
         </button>
         <div
-          class="opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto flex flex-row space-x-2 absolute left-10 bg-stone-900 bg-inherit rounded-r transition duration-300">
+          class="opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto flex flex-row space-x-2 absolute left-10 bg-stone-900 bg-inherit rounded-r transition duration-300 px-2">
           <div>
             <CopyJson :colorSchemeJson="palette" />
           </div>
@@ -153,22 +153,19 @@ import { useDebounceFn } from '@vueuse/core';
 
 const emit = defineEmits(['update:colorSchemeJson', 'update:showShades', 'color-scheme-generated']);
 
-
+/*
 const props = defineProps({
   colors: {
     type: Object,
     required: true,
   },
 });
+*/
 
 const numBaseColors = ref(4);
 const numShades = ref(3);
 const colorScheme = ref('triadic');
 const useSelectedInitialColor = ref(false);
-
-/*
-const vueUseColor = ref('#194D33');
-*/
 
 /* testing for vueUseColor */
 
@@ -274,7 +271,7 @@ async function generateColorsAndSave() {
     selectedInitialColor = randomHexColor();
   }
 
-  await nextTick(); // Wait for the next DOM update cycle
+  await nextTick();
 
   const initialColorValue = selectedInitialColor;
   const initialColorObject = chroma(initialColorValue);
@@ -312,7 +309,6 @@ async function copyPalette() {
   const jsonString = JSON.stringify(palette.value, null, 2);
   try {
     await navigator.clipboard.writeText(jsonString);
-    console.log('Color scheme JSON copied to clipboard');
   } catch (err) {
     console.error('Failed to copy color scheme JSON: ', err);
   }

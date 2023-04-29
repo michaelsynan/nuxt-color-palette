@@ -6,6 +6,7 @@ import Components from 'unplugin-vue-components/vite'
 
 export default defineNuxtConfig({
   target: 'static',
+
   app: {
   baseURL: '/nuxt-color-palette/',
     head: {
@@ -13,21 +14,22 @@ export default defineNuxtConfig({
     }
   },
 
-
-//  prerender: {
-//    routes: [ process.env.BASE_URL || 'http://localhost:3000'],
-//  },
+  //  prerender: {
+  //    routes: [ process.env.BASE_URL || 'http://localhost:3000'],
+  //  },
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
     ['unplugin-icons/nuxt', { autoInstall: true }]
   ],
+
   pinia: {
     autoImports: [
       'defineStore', 
       ['defineStore', 'definePiniaStore'], 
     ],
   },
+
   vite: {
     plugins: [
         Components({
@@ -36,14 +38,20 @@ export default defineNuxtConfig({
         Icons(),
     ]
 },
+
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
+
+  // extends: [
+  //   'github:michaelsynan/nuxt-base-layer#master'
+  // ]
   css: ['@/assets/css/main.css'],
- // extends: [
- //   'github:michaelsynan/nuxt-base-layer#master'
- // ]
+
+  devtools: {
+    enabled: true
+  }
 });
