@@ -1,9 +1,4 @@
 <template>
-
- <!-- <ExportPalette v-model="colorSchemeJson" /> -->
-
-
-
   <div class="text-white p-2 rounded m-4 flex flex-col items-center space-y-2 my-8 fixed w-full z-50">
     <div class="flex flex-row space-x-2">
       <button @click="generateColorsAndSave"
@@ -16,46 +11,54 @@
       <div class="group flex flex-row relative  shadow transition duration-300">
         <button
           class="z-10 flex items-center justify-center py-2.5 px-2 rounded-l rounded-r group-hover:rounded-r-none transition duration-300 bg-stone-800 hover:bg-stone-900">
+          <i-mdi-heart class="text-xl group-hover:opacity-80" />
+        </button>
+      </div>
+      <div class="group flex flex-row relative  shadow transition duration-300">
+        <button
+          class="z-10 flex items-center justify-center py-2.5 px-2 rounded-l rounded-r group-hover:rounded-r-none transition duration-300 bg-stone-800 hover:bg-stone-900">
           <i-mdi-floppy @click="copyPalette" class="text-xl group-hover:opacity-80" />
         </button>
         <div
           class="opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto flex flex-row space-x-2 absolute left-10 bg-stone-900 bg-inherit rounded-r transition duration-300">
-          <div><CopyJson :colorSchemeJson="palette" /></div>
+          <div>
+            <CopyJson :colorSchemeJson="palette" />
+          </div>
           <div class="py-2.5 px-2"><span>Tailwind</span></div>
         </div>
       </div>
     </div>
     <transition name="slide">
       <div v-if="showAdvancedOptions"
-        class="mt-2 flex flex-row items-end space-x-4 bg-stone-950 bg-opacity-80 p-4 rounded-lg">
-
+        class="mt-2 flex flex-row items-stretch space-x-4 bg-stone-950 bg-opacity-80 p-4 rounded-lg">
         <div class="flex flex-wrap justify-center flex-col">
           <label for="numBaseColors" class="block mb-1">Base Colors</label>
           <select v-model="numBaseColors" id="numBaseColors" class="w-full bg-gray-700 rounded p-2 shadow cursor-pointer">
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
           </select>
         </div>
         <div class="flex flex-wrap justify-center flex-col">
           <label for="numShades" class="block mb-1">Shades</label>
           <div class="flex flex-row">
- 
-          <select v-model="numShades" id="numShades" class="w-full bg-gray-700 rounded-l p-2 cursor-pointer">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
-          <div class="w-10 select-none transition duration-200 ease-in" @click="toggleShades">
-  <div class="flex justify-center align-middle px-2 h-full bg-gray-700 rounded-r border-l-2 border-stone-800">
-    <i-mdi-eye-off v-if="!showShades" class="cursor-pointer text-xl my-auto" />
-    <i-mdi-eye v-if="showShades" class="cursor-pointer text-xl my-auto" />
-  </div>
-</div>
-
-        </div>
+            <select v-model="numShades" id="numShades" class="w-full bg-gray-700 rounded-l p-2 cursor-pointer">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <div class="w-10 select-none transition duration-200 ease-in" @click="toggleShades">
+              <div class="flex justify-center align-middle px-2 h-full bg-gray-700 rounded-r border-l-2 border-stone-800">
+                <i-mdi-eye-off v-if="!showShades" class="cursor-pointer text-xl my-auto" />
+                <i-mdi-eye v-if="showShades" class="cursor-pointer text-xl my-auto" />
+              </div>
+            </div>
+          </div>
         </div>
         <div class="flex flex-wrap justify-center flex-col">
           <label for="colorScheme" class="block mb-1">Color Scheme</label>
@@ -68,24 +71,33 @@
             <option value="tetradic">Tetradic</option>
           </select>
         </div>
-        <div class="flex flex-wrap justify-center flex-col items-end">
-          <label for="initialColor" class="block mb-1">Initial Color</label>
-          <input v-model="userSelectedInitialColor" id="initialColor" type="color" class="bg-gray-700 rounded p-2 shadow cursor-pointer">
-        </div>
-        <div class="flex items-center">
-          <span class="text-xs text-stone-400">Random</span>
-          <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in mx-4">
-            <input v-model="useSelectedInitialColor" id="useSelectedInitialColor" type="checkbox"
-              class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" />
-            <label for="useSelectedInitialColor"
-              class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 ease-in-out"></label>
+        <div class="flex flex-wrap flex-col">
+          <label for="initialColor" class="block mb-1 text-xss">Initial Color</label>
+
+          <!-- Start color picker -->
+          <div class="relative cursor-pointer" @click.stop="showChrome = true">
+            <div class="w-12 h-6 m-1" :style="{ backgroundColor: userSelectedInitialColor }"></div>
+            <div v-if="showChrome" class="absolute top-8 z-10 p-1">
+              <Chrome :model-value="somecolors" @update:model-value="onColorUpdate" />
+            </div>
           </div>
-          <span class="text-xs text-stone-400">Select</span>
+          <!-- End color picker -->
+
+        </div>
+        <div class="flex flex-col h-full">
+          <label for="initialColor" class="mb-1 text-xss self-start">Random Color</label>
+          <div class="flex items-center mt-auto h-full">
+            <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in mx-4">
+              <input v-model="useSelectedInitialColor" id="useSelectedInitialColor" type="checkbox"
+                class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-200 ease-in-out" />
+              <label for="useSelectedInitialColor"
+                class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 ease-in-out"></label>
+            </div>
+          </div>
         </div>
       </div>
     </transition>
   </div>
-  
 </template>
 
 <style scoped>
@@ -135,13 +147,9 @@
 </style>
 
 <script setup>
-import { ref, defineEmits, onMounted, watchEffect } from 'vue';
+import { ref, defineEmits, onMounted, watchEffect, defineProps } from 'vue';
 import chroma from 'chroma-js';
 import { generateColors, generateBaseColors } from '@/config/generateColors.js';
-import { defineProps } from 'vue';
-
-
-
 
 const emit = defineEmits(['update:colorSchemeJson', "update:showShades"]);
 
@@ -156,13 +164,42 @@ const props = defineProps({
 const numBaseColors = ref(3);
 const numShades = ref(1);
 const colorScheme = ref('triadic');
-
 const useSelectedInitialColor = ref(false);
-const userSelectedInitialColor = ref('#e01b24');
+const vueUseColor = ref('#194D33');
+
+/* testing for vueUseColor */
+
+const somecolors = ref('#14B8A6');
+const userSelectedInitialColor = ref(somecolors.value);
+const showChrome = ref(false);
+
+function onColorUpdate(newColor) {
+  somecolors.value = newColor.hex8;
+  userSelectedInitialColor.value = newColor.hex;
+  console.log('Updated color:', newColor);
+  console.log('Updated user selected initial color:', userSelectedInitialColor.value);
+}
+
+const onClickOutside = (event) => {
+  if (!event.target.closest('.relative.cursor-pointer')) {
+    showChrome.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('click', onClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', onClickOutside);
+});
+
+/* end testing for vueUseColor */
+
 const showAdvancedOptions = ref(false);
 const showShades = ref(true);
 
-const colorSchemeJson = ref({}); // Add this line to create a new reactive variable
+const colorSchemeJson = ref({});
 provide('colorSchemeJson', colorSchemeJson);
 
 const palette = ref({});
@@ -199,7 +236,7 @@ async function generateColorsAndSave() {
   if (useSelectedInitialColor.value) {
     selectedInitialColor = userSelectedInitialColor.value;
 
-    // Generate a random color scheme
+// Generate a random color scheme
     const randomColorSchemeOptions = [
       'triadic',
       'complementary',
@@ -220,7 +257,6 @@ async function generateColorsAndSave() {
 
   const initialColorValue = selectedInitialColor;
   const initialColorObject = chroma(initialColorValue);
-  console.log('Initial Color:', initialColorValue);
 
   console.log('Values for generateBaseColors:',
     'colorScheme:', colorScheme.value,
@@ -234,15 +270,6 @@ async function generateColorsAndSave() {
     initialColorValue
   );
 
-  console.log('Base colors:', baseColors)
-
-  console.log('Values for generateColors:',
-    'numBaseColors:', numBaseColors.value,
-    'numShades:', numShades.value,
-    'colorScheme:', colorScheme.value,
-    'baseColors:', baseColors
-  );
-
   const orderedOutput = await generateColors(
     numBaseColors.value,
     numShades.value,
@@ -252,14 +279,12 @@ async function generateColorsAndSave() {
   const colorSchemeJson = orderedOutput;
   console.log('Color scheme JSON:', colorSchemeJson);
   palette.value = colorSchemeJson;
-emit('color-scheme-generated', colorSchemeJson);
+  emit('color-scheme-generated', colorSchemeJson);
 }
 
 onMounted(() => {
   generateColorsAndSave();
 });
-
-
 
 function toggleShades(event) {
   if (event.detail === 1) {
@@ -268,7 +293,5 @@ function toggleShades(event) {
     console.log('showShades:' + showShades.value)
   }
 }
-
-
 
 </script>

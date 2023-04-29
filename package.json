@@ -21,8 +21,11 @@
     "vue": "latest"
   },
   "dependencies": {
+    "@ckpack/vue-color": "^1.4.1",
     "@pinia/nuxt": "^0.4.7",
     "chroma-js": "^2.4.2",
-    "pinia": "^2.0.33"
+    "pinia": "^2.0.33",
+    "tinycolor2": "^1.6.0",
+    "vue3-colorpicker": "^2.1.2"
   }
 }

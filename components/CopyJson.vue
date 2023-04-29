@@ -19,15 +19,15 @@ export default {
   setup(props) {
     const copied = ref(false);
 
+
     watch(
       () => props.colorSchemeJson,
-      (newColors) => {
+     /* (newColors) => {
         console.log('New colors:', newColors);
-      }
+      } */
     );
 
     function copyPalette() {
-      console.log('console log from copyjson:', props.colorSchemeJson);
       const jsonText = JSON.stringify(props.colorSchemeJson, null, 2);
       navigator.clipboard.writeText(jsonText).then(() => {
         copied.value = true;

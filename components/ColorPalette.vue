@@ -6,7 +6,7 @@
         <div v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => key.endsWith('-500'))"
           :key="colorKey" class="items-center justify-center flex-grow flex-shrink-0 text-center flex"
           :style="{ backgroundColor: colorValue }">
-          <span class="color-label font-bold" :class="computedTextColor(colorValue)">{{ colorValue }}</span>
+          <span class="color-label font-bold uppercase text-2xl" :class="computedTextColor(colorValue)">{{ colorValue }}</span>
         </div>
 
         <div class="flex flex-row -mt-20 h-20">
@@ -72,11 +72,6 @@ const updateColorGroups = () => {
 
 updateColorGroups();
 
-onMounted(() => {
-  console.log('showShades from ColorPalette (onMounted):', props.showShades);
-});
-
-
 watch(
   () => props.colors,
   () => {
@@ -84,12 +79,14 @@ watch(
   }
 );
 
+/*
 watch(
   () => props.showShades,
   (newVal) => {
     console.log('showShades from ColorPalette (updated):', newVal);
   }
 );
+*/
 
 const filteredColorGroups = computed(() => {
   if (props.showShades) {
@@ -108,7 +105,6 @@ const filteredColorGroups = computed(() => {
   return filteredGroups;
 });
 
-console.log('showShades from ColorPalette:' + props.showShades)
 </script>
 
 <style scoped>

@@ -13,8 +13,6 @@ export default {
       showShades.value = newShowShades;
     };
 
-    console.log('showShades from index:' + showShades.value)
-
     return {
       showShades,
       colorSchemeJson,
