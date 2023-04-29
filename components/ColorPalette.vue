@@ -1,28 +1,16 @@
 <template>
   <div class="h-screen w-screen overflow-hidden">
-    <div
-      class="space-x-4 w-10 align-middle select-none transition duration-200 ease-in mb-4 fixed bottom-10 left-10 flex flex-cols">
-
-      <!--
-      <ExportPalette :palette="props.colors" />
-      <CopyJson :palette="props.colors" />
-      -->
-    </div>
-    <div class="grid grid-cols-fit grid-rows-fit flex-grow h-full">
+    <div class="grid grid-cols-fit grid-rows-fit h-full">
       <div id="color-container" v-for="(group, groupName) in filteredColorGroups" :key="groupName"
-        class="m-1 flex-grow flex-shrink-0">
-        <h3 class="text-lg capitalize hidden">{{ groupName }}</h3>
-
+        class="m-1 flex flex-col">
         <div v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => key.endsWith('-500'))"
-          :key="colorKey" class="color-square base-color items-center justify-center flex-grow flex-shrink-0"
+          :key="colorKey" class="items-center justify-center flex-grow flex-shrink-0 text-center flex"
           :style="{ backgroundColor: colorValue }">
-          <span class="color-label font-bold opacity-70" :class="computedTextColor(colorValue)">{{ colorValue }}</span>
+          <span class="color-label font-bold" :class="computedTextColor(colorValue)">{{ colorValue }}</span>
         </div>
 
-        <div class="flex flex-grow h-40">
-          <transition name="fade"
-            v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => !key.endsWith('-500'))"
-            :key="colorKey">
+        <div class="flex flex-row -mt-20 h-20">
+          <transition name="fade" mode="out-in" v-for="([colorKey, colorValue]) in non500Colors(group)" :key="colorKey">
             <div v-if="showShades" class="color-square flex items-center justify-center h-full w-full"
               :style="{ backgroundColor: colorValue }">
               <span class="text-xs hidden">{{ colorValue }}</span>
@@ -34,8 +22,15 @@
   </div>
 </template>
 
+
+
 <script setup>
 import { ref, computed, watch, defineProps, onMounted } from 'vue';
+
+const non500Colors = (group) => {
+  return Object.entries(group).filter(([key]) => !key.endsWith('-500'));
+};
+
 
 function computedTextColor(bgColor) {
   const color = bgColor.substring(1);

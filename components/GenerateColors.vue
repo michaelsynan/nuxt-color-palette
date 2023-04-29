@@ -20,36 +20,46 @@
         </button>
         <div
           class="opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto flex flex-row space-x-2 absolute left-10 bg-stone-900 bg-inherit rounded-r transition duration-300">
-          <div class="py-2.5 px-2"><span> <CopyJson :colorSchemeJson="palette" /></span></div>
+          <div><CopyJson :colorSchemeJson="palette" /></div>
           <div class="py-2.5 px-2"><span>Tailwind</span></div>
         </div>
       </div>
     </div>
     <transition name="slide">
       <div v-if="showAdvancedOptions"
-        class="mt-2 flex flex-row items-end space-x-4 bg-stone-950 bg-opacity-80 p-4 rounded-lg pr-10">
+        class="mt-2 flex flex-row items-end space-x-4 bg-stone-950 bg-opacity-80 p-4 rounded-lg">
 
         <div class="flex flex-wrap justify-center flex-col">
-          <label for="numBaseColors" class="block mb-1">Base Colors:</label>
-          <select v-model="numBaseColors" id="numBaseColors" class="w-full bg-gray-700 rounded p-2 shadow">
+          <label for="numBaseColors" class="block mb-1">Base Colors</label>
+          <select v-model="numBaseColors" id="numBaseColors" class="w-full bg-gray-700 rounded p-2 shadow cursor-pointer">
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="5">5</option>
           </select>
         </div>
         <div class="flex flex-wrap justify-center flex-col">
-          <label for="numShades" class="block mb-1">Shades:</label>
-          <select v-model="numShades" id="numShades" class="w-full bg-gray-700 rounded p-2 shadow">
+          <label for="numShades" class="block mb-1">Shades</label>
+          <div class="flex flex-row">
+ 
+          <select v-model="numShades" id="numShades" class="w-full bg-gray-700 rounded-l p-2 cursor-pointer">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="5">5</option>
           </select>
+          <div class="w-10 select-none transition duration-200 ease-in" @click="toggleShades">
+  <div class="flex justify-center align-middle px-2 h-full bg-gray-700 rounded-r border-l-2 border-stone-800">
+    <i-mdi-eye-off v-if="!showShades" class="cursor-pointer text-xl my-auto" />
+    <i-mdi-eye v-if="showShades" class="cursor-pointer text-xl my-auto" />
+  </div>
+</div>
+
+        </div>
         </div>
         <div class="flex flex-wrap justify-center flex-col">
-          <label for="colorScheme" class="block mb-1">Color Scheme:</label>
-          <select v-model="colorScheme" id="colorScheme" class="w-full bg-gray-700 rounded p-2 shadow">
+          <label for="colorScheme" class="block mb-1">Color Scheme</label>
+          <select v-model="colorScheme" id="colorScheme" class="w-full bg-gray-700 rounded p-2 shadow cursor-pointer">
             <option value="triadic">Triadic</option>
             <option value="complementary">Complementary</option>
             <option value="splitComplementary">Split Complementary</option>
@@ -59,8 +69,8 @@
           </select>
         </div>
         <div class="flex flex-wrap justify-center flex-col items-end">
-          <label for="initialColor" class="block mb-1">Initial Color:</label>
-          <input v-model="userSelectedInitialColor" id="initialColor" type="color" class="bg-gray-700 rounded p-2 shadow">
+          <label for="initialColor" class="block mb-1">Initial Color</label>
+          <input v-model="userSelectedInitialColor" id="initialColor" type="color" class="bg-gray-700 rounded p-2 shadow cursor-pointer">
         </div>
         <div class="flex items-center">
           <span class="text-xs text-stone-400">Random</span>
@@ -71,13 +81,6 @@
               class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 ease-in-out"></label>
           </div>
           <span class="text-xs text-stone-400">Select</span>
-        </div>
-        <div class="w-10 select-none transition duration-200 ease-in">
-          <label for="toggle" class="block text-xs text-stone-400 mb-2">Shades:</label>
-          <div class="flex justify-center">
-            <i-mdi-eye v-if="!showShades" @click="toggleShades" class="cursor-pointer text-xl" />
-            <i-mdi-eye-off v-if="showShades" @click="toggleShades" class="cursor-pointer text-xl" />
-          </div>
         </div>
       </div>
     </transition>
@@ -157,7 +160,7 @@ const colorScheme = ref('triadic');
 const useSelectedInitialColor = ref(false);
 const userSelectedInitialColor = ref('#e01b24');
 const showAdvancedOptions = ref(false);
-const showShades = ref(false);
+const showShades = ref(true);
 
 const colorSchemeJson = ref({}); // Add this line to create a new reactive variable
 provide('colorSchemeJson', colorSchemeJson);
@@ -258,11 +261,14 @@ onMounted(() => {
 
 
 
-function toggleShades() {
-  showShades.value = !showShades.value;
-  emit("update:showShades", showShades.value);
-  console.log('showShades:' + showShades.value)
+function toggleShades(event) {
+  if (event.detail === 1) {
+    showShades.value = !showShades.value;
+    emit("update:showShades", showShades.value);
+    console.log('showShades:' + showShades.value)
+  }
 }
+
 
 
 </script>

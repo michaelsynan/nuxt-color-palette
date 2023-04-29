@@ -1,8 +1,8 @@
 <!-- components/CopyJson.vue -->
 <template>
   <div>
-    <button @click="copyPalette" class=" text-white text-sm rounded min-w-max">Copy JSON</button>
-    <div v-if="copied" class="text-sm text-green-500 mt-2 absolute">Copied to clipboard!</div>
+    <button @click="copyPalette" class="py-3 px-2 text-white text-sm rounded min-w-max">Copy JSON</button>
+    <div v-if="copied" class="copy-message text-sm text-green-500 mt-2 absolute">Copied to clipboard!</div>
   </div>
 </template>
 
@@ -44,3 +44,24 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.copy-message {
+  opacity: 0;
+  animation: rise-up 1s forwards;
+}
+
+@keyframes rise-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  10%, 80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+</style>
