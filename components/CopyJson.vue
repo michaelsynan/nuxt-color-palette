@@ -1,4 +1,3 @@
-<!-- components/CopyJson.vue -->
 <template>
   <div>
     <button @click="copyPalette" class="py-3 px-2 text-white text-sm rounded min-w-max">Copy JSON</button>
@@ -7,7 +6,7 @@
 </template>
 
 <script>
-import { ref, watch, inject } from 'vue';
+import { ref, watchEffect, inject } from 'vue';
 
 export default {
   props: {
@@ -19,13 +18,9 @@ export default {
   setup(props) {
     const copied = ref(false);
 
-
-    watch(
-      () => props.colorSchemeJson,
-     /* (newColors) => {
-        console.log('New colors:', newColors);
-      } */
-    );
+    watchEffect(() => {
+      // console.log('New colors:', props.colorSchemeJson);
+    });
 
     function copyPalette() {
       const jsonText = JSON.stringify(props.colorSchemeJson, null, 2);

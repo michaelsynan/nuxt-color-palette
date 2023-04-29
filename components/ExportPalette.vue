@@ -1,26 +1,24 @@
-<!-- components/ExportPaletteButton.vue -->
 <template>
   <div>
-    <button @click="exportPalette" class="py-1.5 px-3 bg-teal-500 hover:bg-teal-600 text-white text-sm rounded">Copy Tailwind.config Tokens</button>
-    <div v-if="exported" class="text-sm text-green-500 mt-2 absolute">Palette exported to clipboard!</div>
+    <button @click="exportPalette" class="py-2.5 px-2">Tailwind</button>
+    <div v-if="exported" class="text-sm text-green-500 mt-2 absolute">Copied to clipboard!</div>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
   props: {
-    palette: {
+    colorSchemeJson: {
       type: Object,
       default: () => ({}),
     },
   },
-  data() {
-    return {
-      exported: false,
-    };
-  },
-  methods: {
-    formatPalette(palette) {
+  setup(props) {
+    const exported = ref(false);
+
+    function formatPalette(palette) {
       const formattedPalette = {};
 
       for (const key in palette) {
@@ -34,17 +32,23 @@ export default {
       }
 
       return formattedPalette;
-    },
-    exportPalette() {
-      const formattedPalette = this.formatPalette(this.palette);
+    }
+
+    function exportPalette() {
+      const formattedPalette = formatPalette(props.colorSchemeJson);
       const jsonText = JSON.stringify(formattedPalette, null, 2);
       navigator.clipboard.writeText(jsonText).then(() => {
-        this.exported = true;
+        exported.value = true;
         setTimeout(() => {
-          this.exported = false;
+          exported.value = false;
         }, 3000);
       });
-    },
+    }
+
+    return {
+      exported,
+      exportPalette,
+    };
   },
 };
 </script>

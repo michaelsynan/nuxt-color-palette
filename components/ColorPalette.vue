@@ -2,14 +2,14 @@
   <div class="h-screen w-screen overflow-hidden">
     <div class="grid grid-cols-fit grid-rows-fit h-full">
       <div id="color-container" v-for="(group, groupName) in filteredColorGroups" :key="groupName"
-        class="m-1 flex flex-col">
+        class="m-1 flex flex-col h-auto">
         <div v-for="([colorKey, colorValue]) in Object.entries(group).filter(([key]) => key.endsWith('-500'))"
           :key="colorKey" class="items-center justify-center flex-grow flex-shrink-0 text-center flex"
           :style="{ backgroundColor: colorValue }">
-          <span class="color-label font-bold uppercase text-2xl" :class="computedTextColor(colorValue)">{{ colorValue }}</span>
+          <span class="color-label font-bold uppercase text-xl md:text-2xl" :class="computedTextColor(colorValue)">{{ colorValue }}</span>
         </div>
 
-        <div class="flex flex-row -mt-20 h-20">
+        <div class="flex flex-row -mt-10 h-10 md:-mt-20 md:h-20">
           <transition name="fade" mode="out-in" v-for="([colorKey, colorValue]) in non500Colors(group)" :key="colorKey">
             <div v-if="showShades" class="color-square flex items-center justify-center h-full w-full"
               :style="{ backgroundColor: colorValue }">
@@ -22,10 +22,8 @@
   </div>
 </template>
 
-
-
 <script setup>
-import { ref, computed, watch, defineProps, onMounted } from 'vue';
+import { ref, computed, watchEffect, onMounted } from 'vue';
 
 const non500Colors = (group) => {
   return Object.entries(group).filter(([key]) => !key.endsWith('-500'));
@@ -72,21 +70,9 @@ const updateColorGroups = () => {
 
 updateColorGroups();
 
-watch(
-  () => props.colors,
-  () => {
-    updateColorGroups();
-  }
-);
-
-/*
-watch(
-  () => props.showShades,
-  (newVal) => {
-    console.log('showShades from ColorPalette (updated):', newVal);
-  }
-);
-*/
+watchEffect(() => {
+  updateColorGroups();
+});
 
 const filteredColorGroups = computed(() => {
   if (props.showShades) {
@@ -106,6 +92,7 @@ const filteredColorGroups = computed(() => {
 });
 
 </script>
+
 
 <style scoped>
 .grid-cols-fit {

@@ -6,10 +6,29 @@ import chroma from 'chroma-js';
 // const colorScheme = 'triadic';
 const namingConvention = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
-function randomHexColor() {
-  const hex = Math.floor(Math.random() * 16777215).toString(16);
-  return "#" + hex.padStart(6, '0');
+function randomHexColor(minBrightness = 32, maxBrightness = 223) {
+  let color;
+  do {
+    const randomColorValue = () => {
+      const min = Math.ceil(0);
+      const max = Math.floor(255);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
+    const r = randomColorValue();
+    const g = randomColorValue();
+    const b = randomColorValue();
+
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+    if (brightness >= minBrightness && brightness <= maxBrightness) {
+      color = "#" + r.toString(16).padStart(2, '0') + g.toString(16).padStart(2, '0') + b.toString(16).padStart(2, '0');
+    }
+  } while (!color);
+
+  return color;
 }
+
 
 function generateShades(color, numShades) {
   const shades = [];
