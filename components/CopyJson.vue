@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
 
 export default {
   props: {
@@ -18,17 +18,13 @@ export default {
   setup(props) {
     const copied = ref(false);
 
-    watchEffect(() => {
-      // console.log('New colors:', props.colorSchemeJson);
-    });
-
     function copyPalette() {
       const jsonText = JSON.stringify(props.colorSchemeJson, null, 2);
       navigator.clipboard.writeText(jsonText).then(() => {
         copied.value = true;
         setTimeout(() => {
           copied.value = false;
-        }, 3000);
+        }, 2000);
       });
     }
 

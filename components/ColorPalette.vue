@@ -8,9 +8,7 @@
           :style="{ backgroundColor: colorValue }">
           <span class="color-label font-bold uppercase text-xl md:text-2xl" :class="computedTextColor(colorValue)">{{ colorValue }}</span>
         </div>
-
         <div class="flex flex-row -mt-10 h-10 md:-mt-20 md:h-20">
-          <!-- Removed the <transition> component and moved the v-for directive to the inner <div> element -->
           <div v-for="([colorKey, colorValue]) in non500Colors(group)" :key="colorKey"
                v-if="showShades" class="color-square flex items-center justify-center h-full w-full"
                :style="{ backgroundColor: colorValue }">
@@ -23,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watchEffect, onMounted } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 
 const non500Colors = (group) => {
   return Object.entries(group).filter(([key]) => !key.endsWith('-500'));
@@ -111,5 +109,4 @@ const filteredColorGroups = computed(() => {
   @apply bg-purple-800;
 }
 
-/* Removed the .fade-* CSS classes */
 </style>
