@@ -176,7 +176,6 @@ const showChrome = ref(false);
 const debouncedOnColorUpdate = useDebounceFn((newColor) => {
   somecolors.value = newColor.hex8;
   userSelectedInitialColor.value = newColor.hex;
-  console.log('Updated color:', newColor);
   console.log('Updated user selected initial color:', userSelectedInitialColor.value);
 }, 1000); // Set the debounce delay to your desired value
 
@@ -289,7 +288,7 @@ async function generateColorsAndSave() {
     baseColors
   );
   const colorSchemeJson = orderedOutput;
-  console.log('Color scheme JSON:', colorSchemeJson);
+/*  console.log('Color scheme JSON:', colorSchemeJson); */
   palette.value = colorSchemeJson;
   emit('color-scheme-generated', colorSchemeJson);
 }
