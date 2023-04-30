@@ -18,6 +18,7 @@
         <button
           class="z-10 flex items-center justify-center py-2.5 px-2 rounded-l rounded-r group-hover:rounded-r-none transition duration-300 bg-stone-800 hover:bg-stone-900">
           <i-mdi-floppy @click="copyPalette" class="text-xl group-hover:opacity-80" />
+          <div v-if="copied" class="copy-message text-sm text-green-500 -translate-y-4 absolute">Copied!</div>
         </button>
         <div
           class="opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto flex flex-row space-x-2 absolute left-10 bg-stone-900 bg-inherit rounded-r transition duration-300 px-2">
@@ -146,6 +147,26 @@
   transform: translateY(0);
   opacity: 1;
 }
+
+.copy-message {
+  opacity: 0;
+  animation: rise-up 1s forwards;
+}
+
+@keyframes rise-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  10%, 80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
 </style>
 
 <script setup>
@@ -159,6 +180,7 @@ const numBaseColors = ref(4);
 const numShades = ref(3);
 const colorScheme = ref('triadic');
 const useSelectedInitialColor = ref(false);
+const copied = ref(false);
 
 /* Modal logic */
 
@@ -306,12 +328,16 @@ function toggleShades(event) {
   }
 }
 
+
 async function copyPalette() {
   const jsonString = JSON.stringify(palette.value, null, 2);
+  copied.value = false; // Add this line to reset the copied state
   try {
     await navigator.clipboard.writeText(jsonString);
+    copied.value = true;
   } catch (err) {
     console.error('Failed to copy color scheme JSON: ', err);
+    copied.value = false;
   }
 }
 

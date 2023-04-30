@@ -23,7 +23,6 @@ export default {
 };
 </script>
 
-
 <template>
   <div class="h-full">
     <GenerateColors @color-scheme-generated="updateColorSchemeJson" @update:showShades="updateShowShades" />

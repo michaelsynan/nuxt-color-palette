@@ -1,3 +1,4 @@
+
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
@@ -15,7 +16,8 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
-    ['unplugin-icons/nuxt', { autoInstall: true }]
+    ['unplugin-icons/nuxt', { autoInstall: true }],
+    '@nuxtjs/supabase'
   ],
 
   pinia: {
@@ -23,6 +25,8 @@ export default defineNuxtConfig({
       'defineStore', 
       ['defineStore', 'definePiniaStore'], 
     ],
+  },
+  supabase: {    // Options  
   },
 
   vite: {

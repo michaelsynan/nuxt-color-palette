@@ -1,7 +1,9 @@
 <template>
   <div>
-    <button @click="exportPalette" class="py-2.5 px-2">Tailwind</button>
-    <div v-if="exported" class="text-sm text-green-500 mt-2 absolute">Copied to clipboard!</div>
+    <button @click="exportPalette" class="py-2.5 px-2 items-center justify-center">Tailwind
+      <div v-if="exported" class="copy-message text-sm text-green-500 absolute">Copied!</div>
+    </button>
+
   </div>
 </template>
 
@@ -52,3 +54,24 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.copy-message {
+  opacity: 0;
+  animation: rise-up 1s forwards;
+}
+
+@keyframes rise-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  10%, 80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+</style>
