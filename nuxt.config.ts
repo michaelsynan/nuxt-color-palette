@@ -9,7 +9,6 @@ export default defineNuxtConfig({
   baseURL: '/nuxt-color-palette/',
     head: {
       title: 'Color Palette Generator',
-      link: [{ rel: 'icon', type: 'image/x-icon', href: '@/public/favicon.ico' }]
     }
   },
 

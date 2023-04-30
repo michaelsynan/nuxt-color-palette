@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     IMdiArrowDown: typeof import('~icons/mdi/arrow-down')['default']
     IMdiArrowUp: typeof import('~icons/mdi/arrow-up')['default']
+    IMdiClose: typeof import('~icons/mdi/close')['default']
     IMdiEye: typeof import('~icons/mdi/eye')['default']
     IMdiEyeOff: typeof import('~icons/mdi/eye-off')['default']
     IMdiFloppy: typeof import('~icons/mdi/floppy')['default']

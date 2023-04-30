@@ -11,7 +11,7 @@
       <div class="group flex flex-row relative  shadow transition duration-300">
         <button
           class="z-10 flex items-center justify-center py-2.5 px-2 rounded-l rounded-r group-hover:rounded-r-none transition duration-300 bg-stone-800 hover:bg-stone-900">
-          <i-mdi-heart class="text-xl group-hover:opacity-80" />
+          <i-mdi-heart @click="showModal = !showModal" class="text-xl group-hover:opacity-80" />
         </button>
       </div>
       <div class="group flex flex-row relative  shadow transition duration-300">
@@ -100,6 +100,9 @@
       </div>
     </transition>
   </div>
+  <Teleport to="body">
+      <uiLogIn v-model:visible="showModal" @close="closeModal"  />
+    </Teleport>
 </template>
 
 <style scoped>
@@ -152,22 +155,22 @@ import { generateColors, generateBaseColors } from '@/config/generateColors.js';
 import { useDebounceFn } from '@vueuse/core';
 
 const emit = defineEmits(['update:colorSchemeJson', 'update:showShades', 'color-scheme-generated']);
-
-/*
-const props = defineProps({
-  colors: {
-    type: Object,
-    required: true,
-  },
-});
-*/
-
 const numBaseColors = ref(4);
 const numShades = ref(3);
 const colorScheme = ref('triadic');
 const useSelectedInitialColor = ref(false);
 
-/* testing for vueUseColor */
+/* Modal logic */
+
+const showModal = ref(false);
+
+function closeModal() {
+    showModal.value = false;
+  }
+
+/* end modal logic */
+
+/* vueUseColor logic */
 
 const somecolors = ref('#14B8A6');
 const userSelectedInitialColor = ref(somecolors.value);
@@ -177,7 +180,7 @@ const debouncedOnColorUpdate = useDebounceFn((newColor) => {
   somecolors.value = newColor.hex8;
   userSelectedInitialColor.value = newColor.hex;
   console.log('Updated user selected initial color:', userSelectedInitialColor.value);
-}, 1000); // Set the debounce delay to your desired value
+}, 1000);
 
 
 const onClickOutside = (event) => {
@@ -194,7 +197,7 @@ onUnmounted(() => {
   document.removeEventListener('click', onClickOutside);
 });
 
-/* end testing for vueUseColor */
+/* end vueUseColor logic */
 
 const showAdvancedOptions = ref(false);
 const showShades = ref(true);
@@ -288,7 +291,6 @@ async function generateColorsAndSave() {
     baseColors
   );
   const colorSchemeJson = orderedOutput;
-/*  console.log('Color scheme JSON:', colorSchemeJson); */
   palette.value = colorSchemeJson;
   emit('color-scheme-generated', colorSchemeJson);
 }
