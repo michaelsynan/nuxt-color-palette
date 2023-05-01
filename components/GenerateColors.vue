@@ -1,8 +1,13 @@
 <template>
-  <div class="text-white p-2 rounded m-2 md:m-4 flex flex-col items-center space-y-2 my-4 md:my-8 fixed w-min md:w-full z-50">
-    <div class="flex flex-row space-x-1 md:space-x-2">
-      <button @click="generateColorsAndSave"
-        class="py-2.5 px-5 bg-stone-800 hover:bg-stone-900 rounded shadow text-base font-bold group"><span
+  <div class="text-white p-2 rounded flex flex-col items-center space-y-2 my-4 md:my-6 fixed w-full z-50 ">
+    <div class="flex flex-row space-x-1 md:space-x-2  m-2 md:m-4 ">
+      <button
+      ref="generateButton" 
+        @click="generateColorsAndSave"
+        @keyup.space.prevent="generateColorsAndSave"
+        class="py-2.5 px-5 bg-stone-800 hover:bg-stone-900 rounded shadow text-base font-bold group focus:outline-none focus:border-none"
+        tabindex="0"
+      ><span
           class="group-hover:opacity-80">Generate</span></button>
       <button @click="toggleAdvancedOptions" class="py-2.5 px-2 bg-stone-800 hover:bg-stone-900 rounded shadow text-xl">
         <i-mdi-arrow-down v-if="!showAdvancedOptions" class="group-hover:opacity-80 group" />
@@ -182,6 +187,8 @@ const colorScheme = ref('triadic');
 const useSelectedInitialColor = ref(false);
 const copied = ref(false);
 
+const generateButton = ref(null);
+
 /* Modal logic */
 
 const showModal = ref(false);
@@ -213,6 +220,7 @@ const onClickOutside = (event) => {
 
 onMounted(() => {
   document.addEventListener('click', onClickOutside);
+  generateButton.value.focus();
 });
 
 onUnmounted(() => {
