@@ -18,6 +18,7 @@
       </div>
     </div>
   </div>
+  <enter />
 </template>
 
 <script setup>
@@ -70,7 +71,20 @@ updateColorGroups();
 
 watchEffect(() => {
   updateColorGroups();
-});
+});const getAnimatedStyle = (index) => {
+  const transition = useTransition(
+    ref(true),
+    {
+      duration: 1000,
+      delay: props.delay * index,
+      from: { transform: 'translateY(0)' },
+      to: { transform: `translateY(${index % 2 === 0 ? '-' : ''}100%)` }
+    },
+    ref(false)
+  );
+
+  return transition.value;
+};
 
 const filteredColorGroups = computed(() => {
   if (props.showShades) {
