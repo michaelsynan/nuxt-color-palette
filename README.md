@@ -9,3 +9,8 @@ Includes:
 - Up to 8 base colors
 - Color scheme picker 
 - Shades
+
+Roadmap:
+- [ ] Save color palettes
+- [ ] Component library
+- [ ] Gradients
