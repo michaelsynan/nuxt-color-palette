@@ -8,8 +8,11 @@ export default defineNuxtConfig({
 
   app: {
   baseURL: '/nuxt-color-palette/',
-    head: {
+  head: {
       title: 'Color Palette Generator',
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      ]
     }
   },
 
