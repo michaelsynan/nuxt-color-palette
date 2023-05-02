@@ -15,9 +15,10 @@
       </button>
       <div class="group flex flex-row relative  shadow transition duration-300">
         <button
-          class="z-10 flex items-center justify-center py-2.5 px-2 rounded-l rounded-r group-hover:rounded-r-none transition duration-300 bg-stone-800 hover:bg-stone-900">
+          class="z-10 flex items-center justify-center py-2.5 px-2 rounded-l rounded-r group-hover:rounded-r-none transition duration-300 bg-stone-800 hover:bg-stone-900"  @click="savePaletteToSupabase">
           <i-mdi-heart @click="showModal = !showModal" class="text-xl group-hover:opacity-80" />
         </button>
+        <button @click="getUserPalettes">Get palettes</button>
       </div>
       <div class="group flex flex-row relative  shadow transition duration-300">
         <button
@@ -179,6 +180,7 @@ import { ref, onMounted, watchEffect } from 'vue';
 import chroma from 'chroma-js';
 import { generateColors, generateBaseColors } from '@/config/generateColors.js';
 import { useDebounceFn } from '@vueuse/core';
+
 
 const emit = defineEmits(['update:colorSchemeJson', 'update:showShades', 'color-scheme-generated']);
 const numBaseColors = ref(4);
@@ -346,6 +348,86 @@ async function copyPalette() {
   } catch (err) {
     console.error('Failed to copy color scheme JSON: ', err);
     copied.value = false;
+  }
+}
+// Define the method to save the palette to Supabase
+async function savePaletteToSupabase() {
+  // Access the Supabase client
+  const supabase = useSupabaseClient();
+  const authClient = useSupabaseAuthClient();
+
+
+ // Get the authenticated user object
+ const user = useSupabaseUser().value;
+
+// Check if the user is authenticated
+if (!user) {
+  console.error('User is not authenticated');
+  return;
+}
+
+// Get the authenticated user's UUID
+const userId = user.id;
+
+try {
+  const { data, error } = await authClient
+    .from('colors')
+    .insert([
+      {
+        public_id: userId, // Include the user's UUID in the user_id column
+        palette: JSON.stringify(palette.value), // Save the palette as a JSON string or as an object based on your database schema
+      },
+    ]);
+  if (error) {
+    throw error;
+  }
+  // Handle success (e.g., show a success message)
+  console.log('Palette saved successfully:', data);
+} catch (err) {
+  // Handle error (e.g., show an error message)
+  console.error('Failed to save palette:', err);
+}
+}
+
+//get palettes 
+
+// Import the required composables
+
+// Define the method to retrieve all saved color palettes by a particular user
+async function getUserPalettes() {
+  // Access the Supabase client
+  const supabase = useSupabaseClient();
+
+  // Get the authenticated user object
+  const user = useSupabaseUser().value;
+
+  // Check if the user is authenticated
+  if (!user) {
+    console.error('User is not authenticated');
+    return;
+  }
+
+  // Get the authenticated user's UUID
+  const userId = user.id;
+
+  try {
+    // Retrieve all color palettes where the public_id column matches the user's UUID
+    const { data, error } = await supabase
+      .from('colors')
+      .select('*') // Select all columns
+      .eq('public_id', userId); // Filter by user's UUID
+
+    if (error) {
+      throw error;
+    }
+
+    // Handle success (e.g., process the retrieved data)
+    console.log('Retrieved color palettes:', data);
+    return data;
+    console.log(data) // Return the retrieved data
+  } catch (err) {
+    // Handle error (e.g., show an error message)
+    console.error('Failed to retrieve color palettes:', err);
   }
 }
 
