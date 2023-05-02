@@ -6,5 +6,6 @@ const user = useSupabaseUser()
   <div class="fixed bottom-0 left-0 bg-black" style="padding: 50px 0 100px 0">
     <Account v-if="user" />
     <Auth v-else />
+    <UserSavedPalettes /> 
   </div>
 </template>

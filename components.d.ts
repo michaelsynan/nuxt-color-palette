@@ -16,6 +16,7 @@ declare module '@vue/runtime-core' {
     IMdiEyeOff: typeof import('~icons/mdi/eye-off')['default']
     IMdiFloppy: typeof import('~icons/mdi/floppy')['default']
     IMdiHeart: typeof import('~icons/mdi/heart')['default']
+    IMdiTrash: typeof import('~icons/mdi/trash')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

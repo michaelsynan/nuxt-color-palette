@@ -1,4 +1,5 @@
 <script setup>
+
 const supabase = useSupabaseClient()
 
 const loading = ref(false)
@@ -34,6 +35,11 @@ const handleLogin = async () => {
           :disabled="loading"
         />
       </div>
+
     </div>
   </form>
+  <div class="bg-rose-900">
+      <UserSavedPalettes />
+<div>test</div>
+    </div>
 </template>
