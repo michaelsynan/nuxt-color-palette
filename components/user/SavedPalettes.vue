@@ -1,23 +1,33 @@
 <template>
-  <div class="bg-stone-800 text-white p-4">
-    <button @click="getUserPalettes">Get palettes</button>
-  </div>
   <div>
-   
+    <h3 class="pt-20 pb-5 text-stone-400 text-2xl">Saved Palettes</h3>
     <!-- Render the palettes here -->
-    <div v-for="(palette, index) in palettes" :key="index" class="palette-grid">
+    <div
+      v-for="(palette, index) in palettes"
+      :key="index"
+      class="palette-grid relative group border-b-2 border-stone-800 pb-3"
+    >
       <!-- Display a header for each palette -->
-      <div class="palette-header">Palette {{ index + 1 }}</div>
-      <div v-for="(color, colorIndex) in Object.entries(JSON.parse(palette.palette)).filter(([key]) => key.includes('-500'))" :key="colorIndex" :style="{ backgroundColor: color[1] }" class="color-swatch">
+      <!-- <div class="palette-header">Palette {{ index + 1 }}</div> -->
+      <div
+        v-for="(color, colorIndex) in Object.entries(JSON.parse(palette.palette)).filter(([key]) => key.includes('-500'))"
+        :key="colorIndex"
+        :style="{ backgroundColor: color[1] }"
+        class="color-swatch"
+      >
         <!-- Color swatch content -->
       </div>
-      <i-mdi-trash @click="removePalette(index)" />
+      <div class="absolute top-1/2 transform -translate-y-1/2 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 items-center pb-2">
+        <i-mdi-clipboard @click="removePalette(palette)" class="text-xl cursor-pointer" />
+        <i-mdi-trash @click="removePalette(palette)"  class="text-xl cursor-pointer"/>
+      </div>
     </div>
   </div>
 </template>
 
+
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
 
 
 
@@ -63,13 +73,11 @@ async function getUserPalettes() {
 
 
 
-// Add the removePalette function
-async function removePalette(index) {
+async function removePalette(palette) {
   const supabase = useSupabaseClient();
-  const palette = palettes.value[index];
 
   if (!palette) {
-    console.error('Invalid palette index:', index);
+    console.error('Invalid palette:', palette);
     return;
   }
 
@@ -77,14 +85,14 @@ async function removePalette(index) {
     const { error } = await supabase
       .from('colors')
       .delete()
-      .eq('id', palette.id); // Filter by palette id
+      .eq('id', palette.id); // Make sure you are using the correct column and value
 
     if (error) {
       throw error;
     }
 
     // Remove the palette from the palettes ref array
-    palettes.value.splice(index, 1);
+    palettes.value = palettes.value.filter(p => p.id !== palette.id);
   } catch (err) {
     // Handle error (e.g., show an error message)
     console.error('Failed to delete color palette:', err);
@@ -93,6 +101,14 @@ async function removePalette(index) {
 
 // Call the getUserPalettes method when the component is mounted
 onMounted(getUserPalettes);
+
+watchEffect(() => {
+    // If the user is not authenticated, clear the palettes array
+    if (!user) {
+      palettes.value = [];
+    }
+  });
+
 </script>
 
 <style scoped>

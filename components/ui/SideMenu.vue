@@ -1,73 +1,89 @@
 <template>
-  <!-- Side menu -->
-  <div class="side-menu" :class="{ open: isMenuOpen }">
-    <div class="bg-stone-800 text-white p-4">
-      <button @click="getUserPalettes">Get palettes</button>
+  <!-- Hamburger menu button -->
+  <button @click="isMenuOpen = !isMenuOpen" class="hamburger-menu text-4xl">
+    <i-mdi-menu />
+  </button>
+  <!-- Side menu with conditional CSS classes -->
+  <div :class="['side-menu', isMenuOpen ? 'open' : 'closed']">
+    <div class="w-full absolute">
+      <button @click="toggleAccount" class="profile text-4xl right-0 ml-auto relative">
+        <i-mdi-account-circle />
+      </button>
     </div>
-    <div>
-      <div class="text-8xl text-white"> TESTING</div>
-      <!-- Render the palettes here -->
-      <div v-for="(palette, index) in palettes" :key="index" class="palette-grid">
-        <!-- Display a header for each palette -->
-        <div class="palette-header">Palette {{ index + 1 }}</div>
-        <div v-for="(color, colorIndex) in Object.entries(JSON.parse(palette.palette)).filter(([key]) => key.includes('-500'))" :key="colorIndex" :style="{ backgroundColor: color[1] }" class="color-swatch">
-          <!-- Color swatch content -->
-        </div>
-      </div>
-    </div>
+    <enter v-if="!user" :showProfileFromParent="showProfile" />
+    <account v-if="user && showAccount" />
+    <userSavedPalettes v-if="user && !showAccount" />
   </div>
 </template>
 
 <script setup>
-// Import the necessary functions and reactive variables
 import { ref } from 'vue';
+import { defineEmits } from 'vue';
 
-// Define a reactive variable to control the visibility of the side menu
+const { emit } = defineEmits();
+const user = useSupabaseUser()
+
+// Add the isMenuOpen ref variable
 const isMenuOpen = ref(false);
 
-// Define the method to toggle the side menu
-function toggleMenu() {
-  isMenuOpen.value = !isMenuOpen.value;
+function toggleAccount() {
+  showAccount.value = !showAccount.value;
 }
 
-// Your other script setup code here
+const showProfile = ref(false);
+
+function handleShowProfile() {
+  showProfile.value = true;
+}
+
+const showAccount = ref(false);
+
 </script>
 
 <style scoped>
+/* Hamburger menu button styles */
+.hamburger-menu {
+  background-color: black;
+  position: fixed;
+  top: 10px;
+  left: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.profile {
+  background-color: black;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* Side menu styles */
 .side-menu {
   position: fixed;
   top: 0;
   left: 0;
-  width: 250px;
-  height: 100vh;
-  background-color: black;
-  color: white;
-  padding: 20px;
+  height: 100%;
+  width: 300px;
+  background: #0f0f0f;
   overflow-y: auto;
-  transform: translateX(-100%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease-in-out;
+  z-index: 999;
+}
+
+/* CSS classes for open and closed states */
+.side-menu.closed {
+  transform: translateX(-100%);
 }
 
 .side-menu.open {
   transform: translateX(0);
-}
-
-.color-swatch {
-  width: 50px;
-  height: 50px;
-  margin: 5px;
-}
-
-.palette-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-  grid-gap: 5px;
-  margin-bottom: 20px;
-}
-
-.palette-header {
-  grid-column: 1 / -1;
-  font-weight: bold;
-  margin-bottom: 10px;
 }
 </style>

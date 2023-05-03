@@ -20,17 +20,17 @@ const handleLogin = async () => {
 </script>
 
 <template>
-  <form class="row flex-center flex" @submit.prevent="handleLogin">
+  <form class="col flex-center flex m-4 h-full" @submit.prevent="handleLogin">
     <div class="col-6 form-widget">
-      <h1 class="header">Supabase + Nuxt 3</h1>
-      <p class="description">Sign in via magic link with your email below</p>
+      <img src="colorpalette.png" class="p-20 -mt-10">
+      <p class="description">Sign in via magic link</p>
       <div>
-        <input class="inputField" type="email" placeholder="Your email" v-model="email" />
+        <input class="inputField p-2.5 bg-stone-800 placeholder-stone-400 w-full my-2 focus:!ring-0 focus:!border-none focus:outline-none" type="email" placeholder="Your email" v-model="email" />
       </div>
       <div>
         <input
           type="submit"
-          class="button block"
+          class="button block bg-[#14b8a6] hover:bg-[#409087] p-2 font-bold cursor-pointer w-full mt-3 focus:ring-0 focus:border-none"
           :value="loading ? 'Loading' : 'Send magic link'"
           :disabled="loading"
         />
@@ -38,8 +38,4 @@ const handleLogin = async () => {
 
     </div>
   </form>
-  <div class="bg-rose-900">
-      <UserSavedPalettes />
-<div>test</div>
-    </div>
 </template>

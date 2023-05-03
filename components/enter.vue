@@ -1,11 +1,27 @@
 <script setup>
+import { ref, watchEffect } from 'vue';
+
 const user = useSupabaseUser()
+
+const showProfile = ref(false);
+
+const props = defineProps({
+  showProfileFromParent: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+watchEffect(() => {
+  showProfile.value = props.showProfileFromParent;
+});
+
 </script>
 
 <template>
-  <div class="fixed bottom-0 left-0 bg-black" style="padding: 50px 0 100px 0">
-    <Account v-if="user" />
+  <div class="mt-20 " style="padding: 50px 0 100px 0">
+    <Account v-if="user && showProfile" />
     <Auth v-else />
-    <UserSavedPalettes /> 
+    <userSavedPalettes v-if="user" />
   </div>
 </template>

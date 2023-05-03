@@ -18,7 +18,6 @@
           class="z-10 flex items-center justify-center py-2.5 px-2 rounded-l rounded-r group-hover:rounded-r-none transition duration-300 bg-stone-800 hover:bg-stone-900"  @click="savePaletteToSupabase">
           <i-mdi-heart @click="showModal = !showModal" class="text-xl group-hover:opacity-80" />
         </button>
-        <button @click="getUserPalettes">Get palettes</button>
       </div>
       <div class="group flex flex-row relative  shadow transition duration-300">
         <button

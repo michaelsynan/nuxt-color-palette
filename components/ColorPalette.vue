@@ -18,7 +18,6 @@
       </div>
     </div>
   </div>
- <enter /> 
 </template>
 
 <script setup>

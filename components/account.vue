@@ -62,31 +62,22 @@ async function signOut() {
 </script>
 
 <template>
-  <form class="form-widget" @submit.prevent="updateProfile">
-    <div>
-      <label for="email">Email</label>
-      <input id="email" type="text" :value="user.email" disabled />
+  <div class="h-screen flex flex-col">
+    <form class="form-widget text-stone-400 shadow-md rounded pb-8" @submit.prevent="updateProfile">
+      <h3 class="pt-20 pb-5">Account</h3>
+      <div class="">
+      <div>
+        <label class="block  dark:text-gray-300 text-base font-bold mb-2" for="email">Email</label>
+        <div>{{ user.email }}</div>
+      </div>
+      <div class="mb-4">
+        <span class="text-[#7C4771] cursor-pointer">edit</span>
+      </div>
+ 
+      </div>
+    </form>
+    <div class="py-4 w-full">
+      <button class="button block bg-red-500 hover:bg-red-700 text-white font-bold py-2 focus:outline-none focus:shadow-outline px-4" @click="signOut" :disabled="loading">Sign Out</button>
     </div>
-    <div>
-      <label for="username">Username</label>
-      <input id="username" type="text" v-model="username" />
-    </div>
-    <div>
-      <label for="website">Website</label>
-      <input id="website" type="url" v-model="website" />
-    </div>
-
-    <div>
-      <input
-        type="submit"
-        class="button primary block"
-        :value="loading ? 'Loading ...' : 'Update'"
-        :disabled="loading"
-      />
-    </div>
-
-    <div>
-      <button class="button block" @click="signOut" :disabled="loading">Sign Out</button>
-    </div>
-  </form>
+  </div>
 </template>
