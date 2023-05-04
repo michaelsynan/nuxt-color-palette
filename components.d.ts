@@ -9,13 +9,16 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    IMdiAccountCircle: typeof import('~icons/mdi/account-circle')['default']
     IMdiArrowDown: typeof import('~icons/mdi/arrow-down')['default']
     IMdiArrowUp: typeof import('~icons/mdi/arrow-up')['default']
+    IMdiClipboard: typeof import('~icons/mdi/clipboard')['default']
     IMdiClose: typeof import('~icons/mdi/close')['default']
     IMdiEye: typeof import('~icons/mdi/eye')['default']
     IMdiEyeOff: typeof import('~icons/mdi/eye-off')['default']
     IMdiFloppy: typeof import('~icons/mdi/floppy')['default']
     IMdiHeart: typeof import('~icons/mdi/heart')['default']
+    IMdiMenu: typeof import('~icons/mdi/menu')['default']
     IMdiTrash: typeof import('~icons/mdi/trash')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
