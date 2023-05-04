@@ -1,12 +1,13 @@
 <template>
   <!-- Hamburger menu button -->
-  <button @click="isMenuOpen = !isMenuOpen" class="hamburger-menu text-4xl">
-    <i-mdi-menu />
+  <button @click="isMenuOpen = !isMenuOpen" class="hamburger-menu p-2 text-2xl mt-2 ml-4 bg-stone-800 hover:bg-stone-900 rounded shadow ">
+    <i-mdi-menu v-if="!MenuOpen" />
+    <i-mdi-close v-else />
   </button>
   <!-- Side menu with conditional CSS classes -->
   <div :class="['side-menu', isMenuOpen ? 'open' : 'closed']">
     <div class="w-full absolute">
-      <button @click="toggleAccount" class="profile text-4xl right-0 ml-auto relative">
+      <button @click="toggleAccount" class="profile text-4xl right-0 mt-2 ml-auto relative">
         <i-mdi-account-circle />
       </button>
     </div>
@@ -43,11 +44,11 @@ const showAccount = ref(false);
 <style scoped>
 /* Hamburger menu button styles */
 .hamburger-menu {
-  background-color: black;
+
   position: fixed;
   top: 10px;
   left: 5px;
-  background: none;
+
   border: none;
   cursor: pointer;
   z-index: 1000;

@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white p-2 rounded flex flex-col items-center space-y-2 my-4 md:my-6 fixed w-full z-50 ">
+  <div class="text-white p-2 rounded flex flex-col items-center space-y-2 fixed w-full z-50 ">
     <div class="flex flex-row space-x-1 md:space-x-2  m-2 md:m-4 ">
       <button
       ref="generateButton" 

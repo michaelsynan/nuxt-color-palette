@@ -25,6 +25,7 @@ export default {
 
 <template>
   <div class="h-full">
+    <uiSideMenu />
     <GenerateColors @color-scheme-generated="updateColorSchemeJson" @update:showShades="updateShowShades" />
     <ColorPalette :colors="colorSchemeJson" :showShades="showShades" />
   </div>
