@@ -7,104 +7,95 @@
         <i-mdi-close class="absolute top-4 right-4 text-2xl cursor-pointer" @click="handleClose" />
 
         <div class="flex flex-row mb-4 mt-2 space-x-4">
-          <img src="/colorpalette.png" class="h-40 mr-4 object-contain rounded" />
+          <img src="/colorpalette.png" class="h-36 mr-4 object-contain rounded" />
           <div class="space-between flex flex-col">
-            <h2 class="text-2xl md:text-3xl uppercase">Signup to Save </h2>
-            <div class="my-4 text-base md:text-lg">We're building an entire suite of tools for you. Signup to save your palettes and get notified when we launch.
+            <h2 class="text-2xl md:text-2xl uppercase">Signup to Get Started </h2>
+            <div class="my-4 text-base md:text-lg">We're building an entire suite of tools. Join to save your palettes and get notified as more launches.
             </div>
           </div>
         </div>
 
         <label for="email" class="text-stone-500">Email:</label>
         <div
-          class="flex flex-col md:flex-row items-center space-x-4 bg-transparent md:bg-stone-950 rounded py-1">
-          <div class="w-full">
+          class="flex flex-col md:flex-row items-center space-x-8">
+          <div class="w-full mr-2">
             <input v-model="email" id="email"
-              class="block text-stone-40 shadow w-full rounded-l bg-stone-950 md:bg-transparent focus:ring-0 focus:border-none"
-              placeholder="Enter Email" @keyup.enter="handleSubmit" />
+              class="block text-stone-300 placeholder-stone-600 shadow w-full rounded-l bg-stone-950 p-2.5 focus:ring-0 focus:border-none border-none ring-0 rounded focus:outline-none"
+              placeholder="Enter Email" @keyup.enter="handleLogin" />
           </div>
-          <button @click="handleSubmit"
-            class="m-0 !ml-0 mt-2 md:!mt-0 py-2 max-w block md:inline-block md:max-w-[120px] bg-stone-100 hover:bg-stone-300 text-black w-full shadow rounded-r">Enter</button>
+          <button @click="handleLogin"
+            class="m-0 !ml-0 mt-2 md:!mt-0 py-2 border-0button rounded block bg-[#14b8a6] hover:bg-[#409087] p-2 font-bold cursor-pointer px-10 focus:ring-0 focus:border-none">Enter</button>
         </div>
         <div class="text-red-500 mt-2" v-if="emailError">{{ emailError }}</div>
         <div class="mt-4 absolute" v-if="feedback">{{ feedback }}</div>
       </div>
     </div>
   </transition>
-</template>
-<script>
-import { defineComponent, ref } from 'vue';
+</template><script setup>
+import { ref, watch } from 'vue';
 
-export default defineComponent({
-  props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false,
   },
-  setup(props, { emit }) {
-    const client = useSupabaseClient();
-    const email = ref('');
-    const feedback = ref('');
-    const emailError = ref('');
+});
 
-    function validateEmail() {
-      const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-      if (!email.value) {
-        emailError.value = 'Please enter an email address';
-      } else if (!emailRegex.test(email.value)) {
-        emailError.value = 'Please enter a valid email address';
-      } else {
-        emailError.value = '';
-      }
-    }
+const emit = defineEmits(['close']);
+
+const client = useSupabaseClient();
+const email = ref('');
+const loading = ref(false);
+const feedback = ref('');
+const emailError = ref('');
+const user = useSupabaseUser();
+
+function validateEmail() {
+  const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+  if (!email.value) {
+    emailError.value = 'Please enter an email address';
+  } else if (!emailRegex.test(email.value)) {
+    emailError.value = 'Please enter a valid email address';
+  } else {
+    emailError.value = '';
+  }
+}
+
+// Modify the handleClose function to accept an optional delay parameter
+const handleClose = (delay = 0) => {
+  // Use setTimeout to introduce the delay, if specified
+  setTimeout(() => {
+    email.value = '';
+    feedback.value = '';
+    emailError.value = '';
+    emit('close');
+  }, delay);
+};
+
+const handleLogin = async () => {
+  try {
+    loading.value = true;
+    const { error } = await client.auth.signInWithOtp({ email: email.value });
+    if (error) throw error;
+    alert('Check your email for the login link!');
+    // Close the modal with a 500ms delay after successful sign-in
+    handleClose(250);
+  } catch (error) {
+    alert(error.error_description || error.message);
+    // Close the modal with a 500ms delay after an error occurs
+    handleClose(250);
+  } finally {
+    loading.value = false;
+  }
+};
 
 
-    const handleClose = () => {
-
-      email.value = '';
-      feedback.value = '';
-      emailError.value = '';
-
-      emit('close');
-    };
-
-    async function handleSubmit() {
-      validateEmail();
-      if (emailError.value) {
-        return;
-      }
-
-      try {
-        const { error } = await client.from("color_signup").insert({ email: email.value });
-        if (error) {
-          throw error;
-        }
-        feedback.value = "Form submitted successfully";
-        email.value = "";
-      } catch (error) {
-        console.log("Error occurred", { error });
-        feedback.value = "An error occurred";
-      }
-    }
-
-    return {
-      email,
-      feedback,
-      emailError,
-      handleSubmit,
-      handleClose,
-    };
-  },
-  watch: {
-    visible(val) {
-      if (val) {
-        document.body.classList.add('modal-open');
-      } else {
-        document.body.classList.remove('modal-open');
-      }
-    },
-  },
+watch(() => props.visible, (val) => {
+  if (val) {
+    document.body.classList.add('modal-open');
+  } else {
+    document.body.classList.remove('modal-open');
+  }
 });
 </script>
 

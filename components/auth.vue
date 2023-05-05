@@ -21,17 +21,18 @@ const handleLogin = async () => {
 
 <template>
   <form class="col flex m-4 h-full" @submit.prevent="handleLogin">
-    <div class="col-6">
-      <img src="colorpalette.png" class="p-20 -mt-10">
+    <div class="col-6"><div class="rounded overflow-hidden -mt-10">
+      <img src="colorpalette.png" class="m-20 w-28 mx-auto rounded">
+      </div>
       <p class="description">Sign in via magic link</p>
       <div>
-        <input class="inputField p-2.5 bg-stone-800 placeholder-stone-400 w-full my-2 focus:!ring-0 focus:!border-none focus:outline-none" type="email" placeholder="Your email" v-model="email" />
+        <input class="inputField p-2.5 rounded bg-stone-800 placeholder-stone-400 w-full my-2 focus:!ring-0 focus:!border-none focus:outline-none" type="email" placeholder="Your email" v-model="email" />
       </div>
       <div>
         <input
           type="submit"
-          class="button block bg-[#14b8a6] hover:bg-[#409087] p-2 font-bold cursor-pointer w-full mt-3 focus:ring-0 focus:border-none"
-          :value="loading ? 'Loading' : 'Send magic link'"
+          class="button rounded block bg-[#14b8a6] hover:bg-[#409087] p-2 font-bold cursor-pointer w-full mt-3 focus:ring-0 focus:border-none"
+          :value="loading ? 'Loading' : 'Send Magic Link'"
           :disabled="loading"
         />
       </div>

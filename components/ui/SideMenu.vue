@@ -7,7 +7,7 @@
   <!-- Side menu with conditional CSS classes -->
   <div :class="['side-menu', isMenuOpen ? 'open' : 'closed']" class="pt-20 absolute px-4">
     <div class="w-full flex justify-end items-center mr-10">
-      <button @click="toggleAccount" class="profile text-4xl relative -top-14 mr-4">
+      <button @click="toggleAccount" class="profile text-4xl relative -top-14">
         <i-mdi-account-circle />
       </button>
     </div>

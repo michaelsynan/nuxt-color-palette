@@ -53,8 +53,7 @@ const newEmail = ref('')
         console.log('Email updated successfully')
       }
     }
-
-  
+ 
 async function signOut() {
   try {
     loading.value = true
@@ -72,14 +71,12 @@ function toggleEditing() {
   editing.value = !editing.value;
 }
 
-
-
 </script>
 
 <template>
   <div class="flex flex-col px-2">
     <h3 class="pb-5">Account</h3>
-    <form class="form-widget text-stone-400 rounded pb-8" @submit.prevent="updateProfile">
+    <form class="form-widget text-stone-400 pb-8 border-b-2 border-stone-600 mb-4" @submit.prevent="updateProfile">
       <div class="">
       <div>
         <label class="block  dark:text-gray-300 text-base font-bold mb-2" for="email">Email</label>

@@ -15,7 +15,7 @@
       </button>
       <div class="group flex flex-row relative  shadow transition duration-300">
         <button
-  class="z-10 flex items-center justify-center py-2.5 px-2 rounded-l rounded-r group-hover:rounded-r-none transition duration-300 bg-stone-800 hover:bg-stone-900"
+  class="z-10 flex items-center justify-center py-2.5 px-2 rounded transition duration-300 bg-stone-800 hover:bg-stone-900"
   @click="user ? savePaletteToSupabase() : showModal = true">
   <i-mdi-heart
     class="text-xl group-hover:opacity-80"
@@ -193,6 +193,7 @@ const numShades = ref(3);
 const colorScheme = ref('triadic');
 const useSelectedInitialColor = ref(false);
 const copied = ref(false);
+const user = useSupabaseUser();
 
 const generateButton = ref(null);
 
@@ -355,44 +356,41 @@ async function copyPalette() {
     copied.value = false;
   }
 }
-// Define the method to save the palette to Supabase
+
+
 async function savePaletteToSupabase() {
-  // Access the Supabase client
-  const supabase = useSupabaseClient();
-  const authClient = useSupabaseAuthClient();
+  // Access the Supabase client and the authenticated user
 
-
- // Get the authenticated user object
- const user = useSupabaseUser().value;
-
-// Check if the user is authenticated
-if (!user) {
-  console.error('User is not authenticated');
-  return;
-}
-
-// Get the authenticated user's UUID
-const userId = user.id;
-
-try {
-  const { data, error } = await authClient
-    .from('colors')
-    .insert([
-      {
-        public_id: userId, // Include the user's UUID in the user_id column
-        palette: JSON.stringify(palette.value), // Save the palette as a JSON string or as an object based on your database schema
-      },
-    ]);
-  if (error) {
-    throw error;
+console.log(user)
+  // Check if the user is authenticated
+  if (!user.value) {
+    console.error('User is not authenticated');
+    return;
   }
-  // Handle success (e.g., show a success message)
-  console.log('Palette saved successfully:', data);
-} catch (err) {
-  // Handle error (e.g., show an error message)
-  console.error('Failed to save palette:', err);
+
+  // Get the authenticated user's UUID
+  const userId = user.value.id;
+  const client = useSupabaseAuthClient()
+  try {
+    const { data, error } = await client
+      .from('colors')
+      .insert([
+        {
+          public_id: userId, // Include the user's UUID in the user_id column
+          palette: JSON.stringify(palette.value), // Save the palette as a JSON string or as an object based on your database schema
+        },
+      ]);
+    if (error) {
+      throw error;
+    }
+    // Handle success (e.g., show a success message)
+    console.log('Palette saved successfully:', data);
+  } catch (err) {
+    // Handle error (e.g., show an error message)
+    console.error('Failed to save palette:', err);
+  }
 }
-}
+
 
 //get palettes 
 
