@@ -1,52 +1,60 @@
 <script setup>
 const supabase = useSupabaseClient()
+const client = useSupabaseAuthClient()
 
+const email = ref('')
 const loading = ref(true)
 const username = ref('')
 const website = ref('')
 const avatar_path = ref('')
-
+const editing = ref(false)
 loading.value = true
 const user = useSupabaseUser()
 
 let { data } = await supabase
-  .from('profiles')
-  .select(`username, website, avatar_url`)
-  .eq('id', user.value.id)
+  .from('auth')
+  .select(`email`)
+  .eq('user_id', user.value.id)
   .single()
 
 if (data) {
-  username.value = data.username
+/*  username.value = data.username
   website.value = data.website
-  avatar_path.value = data.avatar_url
+  avatar_path.value = data.avatar_url */
+  email.value = user.value.email // Initialize email ref with user.email
 }
 
 loading.value = false
 
-async function updateProfile() {
-  try {
-    loading.value = true
-    const user = useSupabaseUser()
 
-    const updates = {
-      id: user.value.id,
-      username: username.value,
-      website: website.value,
-      avatar_url: avatar_path.value,
-      updated_at: new Date(),
-    }
-
-    let { error } = await supabase.from('profiles').upsert(updates, {
-      returning: 'minimal', // Don't return the value after inserting
-    })
-    if (error) throw error
-  } catch (error) {
-    alert(error.message)
-  } finally {
-    loading.value = false
-  }
+function saveEmail() {
+  toggleEditing();
+  updateEmail();
 }
 
+// Initialize email ref with user.email
+watchEffect(() => {
+  if (user.value) {
+    email.value = user.value.email
+  }
+})
+
+const newEmail = ref('')
+
+    const updateEmail = async () => {
+      const { error } = await supabase
+        .from('auth.users')
+        .update({ email: newEmail.value })
+        .eq('id', client.auth.updateUser().id)
+
+      if (error) {
+        console.error(error)
+      } else {
+        console.log('Email updated successfully')
+      }
+    }
+
+  
 async function signOut() {
   try {
     loading.value = true
@@ -59,24 +67,34 @@ async function signOut() {
     loading.value = false
   }
 }
+
+function toggleEditing() {
+  editing.value = !editing.value;
+}
+
+
+
 </script>
 
 <template>
-  <div class="h-screen flex flex-col">
-    <form class="form-widget text-stone-400 shadow-md rounded pb-8" @submit.prevent="updateProfile">
-      <h3 class="pt-20 pb-5">Account</h3>
+  <div class="flex flex-col px-2">
+    <h3 class="pb-5">Account</h3>
+    <form class="form-widget text-stone-400 rounded pb-8" @submit.prevent="updateProfile">
       <div class="">
       <div>
         <label class="block  dark:text-gray-300 text-base font-bold mb-2" for="email">Email</label>
-        <div>{{ user.email }}</div>
+        <div v-if="editing">
+          <input id="email" type="text" v-model="email" class="py-1.5 border-b border-white bg-transparent focus:outline-none focus:ring-0" />        
+        </div>
+        <div class="py-1.5 border-b border-[#0f0f0f]" v-else>{{ user.email }}</div>
       </div>
       <div class="mb-4">
-        <span class="text-[#7C4771] cursor-pointer">edit</span>
+        <span class="text-[#7C4771] cursor-pointer" v-if="!editing" @click="toggleEditing">edit</span>
+        <span class="text-[#7C4771] cursor-pointer" v-else @click="saveEmail">save</span>
       </div>
- 
       </div>
     </form>
-    <div class="py-4 w-full">
+    <div class="pt-4 w-full">
       <button class="button block bg-red-500 hover:bg-red-700 text-white font-bold py-2 focus:outline-none focus:shadow-outline px-4" @click="signOut" :disabled="loading">Sign Out</button>
     </div>
   </div>

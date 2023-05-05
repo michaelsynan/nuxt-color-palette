@@ -5,19 +5,29 @@
       @click.self="handleClose">
       <div class="bg-stone-800 p-4 m-2 md:p-8 shadow-md absolute rounded max-w-xl" @click.stop>
         <i-mdi-close class="absolute top-4 right-4 text-2xl cursor-pointer" @click="handleClose" />
-        <h2 class="text-2xl md:text-3xl uppercase font-bold mb-4">Signup's Coming Soon!</h2>
-        <div class="my-4 text-base md:text-lg">Formwork Studios is launching not just a color palette generator, but a themable component library, as well.<br /> <br />
-          
-          Pre-register for early access!</div>
-          <label for="email" class="text-stone-500">Email:</label>
-  <div class="flex flex-col md:flex-row items-center space-x-4 space-y-2 p-0 md:p-1.5 bg-transparent md:bg-stone-950 rounded">
-    <div class="w-full">
-      <input v-model="email" id="email" class="block p-3 text-stone-40 shadow w-full rounded bg-stone-950 md:bg-transparent" placeholder="Enter Email" @keyup.enter="handleSubmit"  />
-    </div>
-    <button @click="handleSubmit" class="py-3 m-0 !ml-0 mt-2 md:!mt-0 py-2 max-w block md:inline-block md:max-w-[140px] bg-stone-100 hover:bg-stone-300 text-black w-full shadow rounded"  >Let's Talk</button>
-  </div>
-  <div class="text-red-500 mt-2" v-if="emailError">{{ emailError }}</div>
-  <div class="mt-4 absolute" v-if="feedback">{{ feedback }}</div>
+
+        <div class="flex flex-row mb-4 mt-2 space-x-4">
+          <img src="/colorpalette.png" class="h-40 mr-4 object-contain rounded" />
+          <div class="space-between flex flex-col">
+            <h2 class="text-2xl md:text-3xl uppercase">Signup to Save </h2>
+            <div class="my-4 text-base md:text-lg">We're building an entire suite of tools for you. Signup to save your palettes and get notified when we launch.
+            </div>
+          </div>
+        </div>
+
+        <label for="email" class="text-stone-500">Email:</label>
+        <div
+          class="flex flex-col md:flex-row items-center space-x-4 bg-transparent md:bg-stone-950 rounded py-1">
+          <div class="w-full">
+            <input v-model="email" id="email"
+              class="block text-stone-40 shadow w-full rounded-l bg-stone-950 md:bg-transparent focus:ring-0 focus:border-none"
+              placeholder="Enter Email" @keyup.enter="handleSubmit" />
+          </div>
+          <button @click="handleSubmit"
+            class="m-0 !ml-0 mt-2 md:!mt-0 py-2 max-w block md:inline-block md:max-w-[120px] bg-stone-100 hover:bg-stone-300 text-black w-full shadow rounded-r">Enter</button>
+        </div>
+        <div class="text-red-500 mt-2" v-if="emailError">{{ emailError }}</div>
+        <div class="mt-4 absolute" v-if="feedback">{{ feedback }}</div>
       </div>
     </div>
   </transition>
@@ -50,7 +60,7 @@ export default defineComponent({
     }
 
 
-      const handleClose = () => {
+    const handleClose = () => {
 
       email.value = '';
       feedback.value = '';
@@ -99,19 +109,19 @@ export default defineComponent({
 </script>
 
 <style scoped>
-  .modal-enter,
-  .modal-leave-to {
-    opacity: 0;
-    transform: scale(1.1);
-  }
-  
-  .modal-enter-active,
-  .modal-leave-active {
-    transition: all 0.3s;
-  }
-  
-  .modal-open {
-    overflow-y: hidden;
-  }
+.modal-enter,
+.modal-leave-to {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.modal-enter-active,
+.modal-leave-active {
+  transition: all 0.3s;
+}
+
+.modal-open {
+  overflow-y: hidden;
+}
 </style>
   

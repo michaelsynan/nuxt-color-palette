@@ -20,8 +20,8 @@ const handleLogin = async () => {
 </script>
 
 <template>
-  <form class="col flex-center flex m-4 h-full" @submit.prevent="handleLogin">
-    <div class="col-6 form-widget">
+  <form class="col flex m-4 h-full" @submit.prevent="handleLogin">
+    <div class="col-6">
       <img src="colorpalette.png" class="p-20 -mt-10">
       <p class="description">Sign in via magic link</p>
       <div>

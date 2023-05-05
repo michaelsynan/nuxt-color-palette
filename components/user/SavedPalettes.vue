@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="pt-20 pb-5 text-stone-400 text-2xl">Saved Palettes</h3>
+    <h3 class="pb-6 text-2xl">Saved Palettes</h3>
     <!-- Render the palettes here -->
     <div
       v-for="(palette, index) in palettes"
