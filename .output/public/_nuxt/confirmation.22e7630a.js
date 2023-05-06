@@ -1,1 +1,0 @@
-import{a as t,b as o,e as r,u as n,o as s}from"./entry.b40f00c8.js";const c={class:"flex items-center justify-center min-h-screen"},a=["href"],l={__name:"confirmation",setup(i){const e=t().query.confirmation_url;return(_,f)=>(s(),o("div",c,[r("a",{href:n(e)},"Click here to confirm",8,a)]))}};export{l as default};
