@@ -1,5 +1,6 @@
 <script setup>
-const client = useSupabaseClient()
+const client = useSupabaseClient('https://lyrqtmaueesenuuhozvn.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5cnF0bWF1ZWVzZW51dWhvenZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODI4Nzc4MTIsImV4cCI6MTk5ODQ1MzgxMn0.FejhDNqjbooxQIDF2StCVkVsNDgEolgoIe9Mibf49hE')
+
 
 const user = useSupabaseUser()
 const email = ref('')

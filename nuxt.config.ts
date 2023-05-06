@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     }
   },
   app: {
-    baseURL: process.env.NODE_ENV === 'development' ? '/' : '/',  
+   // baseURL: process.env.NODE_ENV === 'development' ? '/' : '/',  
     head: {
       title: 'Color Palette Generator',
       link: [
