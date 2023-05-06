@@ -22,7 +22,7 @@ const handleLogin = async () => {
 <template>
   <form class="col flex m-4 h-full" @submit.prevent="handleLogin">
     <div class="col-6"><div class="rounded overflow-hidden -mt-10">
-      <img src="colorpalette.png" class="m-20 w-28 mx-auto rounded">
+      <img src="/colorpalette.png" class="m-20 w-28 mx-auto rounded">
       </div>
       <p class="description">Sign in via magic link</p>
       <div>

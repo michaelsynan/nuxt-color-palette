@@ -1,31 +1,24 @@
 <script setup>
-const supabase = useSupabaseClient()
-const client = useSupabaseAuthClient()
+const client = useSupabaseClient()
 
+const user = useSupabaseUser()
 const email = ref('')
 const loading = ref(true)
-const username = ref('')
-const website = ref('')
-const avatar_path = ref('')
 const editing = ref(false)
 loading.value = true
-const user = useSupabaseUser()
 
-let { data } = await supabase
+
+let { data } = await client
   .from('auth')
   .select(`email`)
   .eq('user_id', user.value.id)
   .single()
 
 if (data) {
-/*  username.value = data.username
-  website.value = data.website
-  avatar_path.value = data.avatar_url */
   email.value = user.value.email // Initialize email ref with user.email
 }
 
 loading.value = false
-
 
 function saveEmail() {
   toggleEditing();
@@ -41,19 +34,26 @@ watchEffect(() => {
 
 const newEmail = ref('')
 
-    const updateEmail = async () => {
-      const { error } = await supabase
-        .from('auth.users')
-        .update({ email: newEmail.value })
-        .eq('id', client.auth.updateUser().id)
 
+    const updateEmail = async () => {
+      const supabase = useSupabaseAuthClient()
+      console.log('newEmail', email.value)
+      const { user, error } = await supabase.auth.updateUser({
+        email: email.value,
+      })
+   
+        
       if (error) {
         console.error(error)
       } else {
         console.log('Email updated successfully')
       }
+
     }
- 
+
+
+
+
 async function signOut() {
   try {
     loading.value = true

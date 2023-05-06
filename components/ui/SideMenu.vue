@@ -13,15 +13,17 @@
     </div>
     <enter v-if="!user" :showProfileFromParent="showProfile" />
     <account v-if="user && showAccount" />
-    <userSavedPalettes v-if="user && !showAccount" />
+
+    <userSavedPalettes
+  v-if="user && !showAccount"
+  />
+
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { defineEmits } from 'vue';
 
-const { emit } = defineEmits();
 const user = useSupabaseUser()
 
 // Add the isMenuOpen ref variable
@@ -41,21 +43,19 @@ const showAccount = ref(false);
 
 </script>
 
+
 <style scoped>
 /* Hamburger menu button styles */
 .hamburger-menu {
-
   position: fixed;
   top: 10px;
   left: 5px;
-
   border: none;
   cursor: pointer;
   z-index: 1000;
 }
 
 .profile {
-
   border: none;
   cursor: pointer;
   z-index: 1000;

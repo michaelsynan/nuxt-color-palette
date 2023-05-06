@@ -7,8 +7,8 @@ export default defineNuxtConfig({
   target: 'static',
 
   app: {
-  baseURL: '/nuxt-color-palette/',
-  head: {
+    baseURL: process.env.NODE_ENV === 'development' ? '/' : '/nuxt-color-palette/',  
+    head: {
       title: 'Color Palette Generator',
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },

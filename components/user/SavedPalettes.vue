@@ -27,9 +27,15 @@
 
 
 <script setup>
-import { ref, onMounted, watchEffect } from 'vue';
+import { ref, onMounted, watchEffect, inject } from 'vue';
+
+const { emit } = defineEmits(['palette-saved', 'savedPalette']); // Define the 'palette-saved' and 'savedPalette' events
 
 
+
+const props = defineProps({
+  savedPalette: Object,
+});
 
   // Get the authenticated user object
   const user = useSupabaseUser().value;
@@ -108,6 +114,21 @@ watchEffect(() => {
       palettes.value = [];
     }
   });
+
+
+
+
+// Inject the triggerApiCallRef from the parent component
+const triggerApiCallRef = inject('triggerApiCallRef');
+
+const triggerApiCall = () => {
+  console.log('turtles');
+  getUserPalettes();
+};
+
+// Assign the triggerApiCall function to the triggerApiCallRef
+triggerApiCallRef.value = triggerApiCall;
+
 
 </script>
 

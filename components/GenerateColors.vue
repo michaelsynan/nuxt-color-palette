@@ -117,84 +117,18 @@
     </Teleport>
 </template>
 
-<style scoped>
-.toggle-label {
-  width: 100%;
-}
-
-.toggle-checkbox-shades:checked {
-  @apply transform translate-x-4 border-purple-400;
-}
-
-.toggle-checkbox-shades:checked+.toggle-label-shades {
-  @apply bg-purple-800;
-}
-
-.toggle-label-shades {
-  width: 50%;
-}
-
-.toggle-checkbox:checked {
-  @apply transform translate-x-full border-gray-300;
-}
-
-.toggle-checkbox:checked+.toggle-label {
-  @apply bg-gray-700;
-}
-
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.2s ease;
-}
-
-.slide-enter-from,
-.slide-leave-to {
-  transform: translateY(-100%);
-  opacity: 0;
-}
-
-.slide-enter-to,
-.slide-leave-from {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.copy-message {
-  opacity: 0;
-  animation: rise-up 1s forwards;
-}
-
-@keyframes rise-up {
-  0% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-  10%, 80% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-}
-
-</style>
-
 <script setup>
 import { ref, onMounted, watchEffect } from 'vue';
 import chroma from 'chroma-js';
 import { generateColors, generateBaseColors } from '@/config/generateColors.js';
 import { useDebounceFn } from '@vueuse/core';
-
-
-const emit = defineEmits(['update:colorSchemeJson', 'update:showShades', 'color-scheme-generated']);
+const user = useSupabaseUser();
+const emit = defineEmits(['update:colorSchemeJson', 'trigger-api-call', 'update:showShades', 'color-scheme-generated', 'palette-saved']); // Add 'palette-saved' event
 const numBaseColors = ref(4);
 const numShades = ref(3);
 const colorScheme = ref('triadic');
 const useSelectedInitialColor = ref(false);
 const copied = ref(false);
-const user = useSupabaseUser();
-
 const generateButton = ref(null);
 
 /* Modal logic */
@@ -331,6 +265,7 @@ async function generateColorsAndSave() {
   const colorSchemeJson = orderedOutput;
   palette.value = colorSchemeJson;
   emit('color-scheme-generated', colorSchemeJson);
+  
 }
 
 onMounted(() => {
@@ -343,7 +278,6 @@ function toggleShades(event) {
     emit("update:showShades", showShades.value);
   }
 }
-
 
 async function copyPalette() {
   const jsonString = JSON.stringify(palette.value, null, 2);
@@ -359,9 +293,8 @@ async function copyPalette() {
 
 
 async function savePaletteToSupabase() {
-  // Access the Supabase client and the authenticated user
 
-console.log(user)
+  console.log(user)
   // Check if the user is authenticated
   if (!user.value) {
     console.error('User is not authenticated');
@@ -384,19 +317,17 @@ console.log(user)
       throw error;
     }
     // Handle success (e.g., show a success message)
-    console.log('Palette saved successfully:', data);
+    console.log('Palette saved from generate:', palette.value);
+
+    // Emit the 'palette-saved' event with the saved palette data
+    emit('palette-saved', palette.value);
   } catch (err) {
     // Handle error (e.g., show an error message)
     console.error('Failed to save palette:', err);
   }
+  emit('trigger-api-call');
 }
 
-
-//get palettes 
-
-// Import the required composables
-
-// Define the method to retrieve all saved color palettes by a particular user
 async function getUserPalettes() {
   // Access the Supabase client
   const supabase = useSupabaseClient();
@@ -434,5 +365,67 @@ async function getUserPalettes() {
   }
 }
 
-
 </script>
+
+<style scoped>
+.toggle-label {
+  width: 100%;
+}
+
+.toggle-checkbox-shades:checked {
+  @apply transform translate-x-4 border-purple-400;
+}
+
+.toggle-checkbox-shades:checked+.toggle-label-shades {
+  @apply bg-purple-800;
+}
+
+.toggle-label-shades {
+  width: 50%;
+}
+
+.toggle-checkbox:checked {
+  @apply transform translate-x-full border-gray-300;
+}
+
+.toggle-checkbox:checked+.toggle-label {
+  @apply bg-gray-700;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.2s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.copy-message {
+  opacity: 0;
+  animation: rise-up 1s forwards;
+}
+
+@keyframes rise-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  10%, 80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+</style>
