@@ -5,9 +5,9 @@ import Components from 'unplugin-vue-components/vite'
 
 export default defineNuxtConfig({
   target: 'static',
-  runtimeConfig: {
-    public: {
-    supabaseURL: process.env.SUPABASE_URL,
+   runtimeConfig: {
+   public: {
+   supabaseURL: process.env.SUPABASE_URL,
     supabaseKey: process.env.SUPABASE_KEY,
     }
   },

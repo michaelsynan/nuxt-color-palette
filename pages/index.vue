@@ -2,8 +2,8 @@
   <div class="h-full">
 
     <uiSideMenu />
-<div class="text-8xl text-white fixed top-0 right-0 z-50" v-if="user">Am user</div>
-<div class="text-8xl text-white fixed top-0 right-0 z-50" v-else>Am not user</div>
+
+
     <GenerateColors 
       @color-scheme-generated="updateColorSchemeJson" 
       @update:showShades="updateShowShades" 
@@ -17,7 +17,6 @@
 
 <script setup>
 import { ref, provide } from 'vue';
-const user = useSupabaseUser()
 const colorSchemeJson = ref({});
 const showShades = ref(true);
 

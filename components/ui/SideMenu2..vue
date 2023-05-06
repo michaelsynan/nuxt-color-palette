@@ -13,12 +13,13 @@
     </div>
     <enter v-if="!user" :showProfileFromParent="showProfile" />
 
+   
     <account v-if="user && showAccount" />
 
     <userSavedPalettes
   v-if="user && !showAccount"
   />
-    
+   
   </div>
 </template>
 
@@ -30,17 +31,6 @@ const user = useSupabaseUser()
 // Add the isMenuOpen ref variable
 const isMenuOpen = ref(false);
 
-function toggleAccount() {
-  showAccount.value = !showAccount.value;
-}
-
-const showProfile = ref(false);
-
-function handleShowProfile() {
-  showProfile.value = true;
-}
-
-const showAccount = ref(false);
 
 </script>
 

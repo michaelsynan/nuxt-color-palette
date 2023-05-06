@@ -19,9 +19,10 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class=" " style="padding: 50px 0 100px 0">
-   <!-- <Account v-if="user && showProfile" /> -->
-   <Account v-if="user" />
+  
+  <div class=" " style="padding: 50px 0 100px 0"> 
+   <Account v-if="user && showProfile" /> 
+ 
     <Auth v-else />
     <userSavedPalettes v-if="user" />
   </div>

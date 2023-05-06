@@ -358,7 +358,6 @@ async function getUserPalettes() {
     // Handle success (e.g., process the retrieved data)
     console.log('Retrieved color palettes:', data);
     return data;
-    console.log(data) // Return the retrieved data
   } catch (err) {
     // Handle error (e.g., show an error message)
     console.error('Failed to retrieve color palettes:', err);
