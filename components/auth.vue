@@ -14,10 +14,10 @@ const email = ref('')
 const handleLogin = async () => {
   try {
     loading.value = true
-    const { error } = await supabase.auth.signInWithOtp({ email: email.value, 
-    /* options: {
-      emailRedirectTo: 'https://michaelsynan.github.io/nuxt-color-palette/',
-    }, */
+    const { user, session, error } = await supabase.auth.signInWithOtp({ email: email.value, 
+    options: {
+      emailRedirectTo: 'https://colors.formworkstudios.com/',
+    }, 
     })
     if (error) throw error
     alert('Check your email for the login link!')
