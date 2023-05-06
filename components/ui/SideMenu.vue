@@ -12,12 +12,14 @@
       </button>
     </div>
     <enter v-if="!user" :showProfileFromParent="showProfile" />
+<account v-if="user" />
+    <!--
     <account v-if="user && showAccount" />
 
     <userSavedPalettes
   v-if="user && !showAccount"
   />
-
+    -->
   </div>
 </template>
 
