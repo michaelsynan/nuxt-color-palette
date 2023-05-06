@@ -1,7 +1,7 @@
 <script setup>
 
 const config = useRuntimeConfig()
-  const supabase = useSupabaseAuthClient(config.public.supabaseURL, config.public.supabaseKey)
+  const supabase = useSupabaseClient(config.public.supabaseURL, config.public.supabaseKey)
 
   console.log('supaseURL runtimeconfig:' + config.public.supabaseURL)
 
