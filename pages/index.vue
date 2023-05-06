@@ -17,7 +17,7 @@
 
 <script setup>
 import { ref, provide } from 'vue';
-
+const user = useSupabaseUser()
 const colorSchemeJson = ref({});
 const showShades = ref(true);
 
