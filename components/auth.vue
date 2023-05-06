@@ -1,8 +1,11 @@
 <script setup>
+
 const config = useRuntimeConfig()
-  const supabase = useSupabaseAuthClient(config.supabaseURL, config.supabaseKey)
+  const supabase = useSupabaseAuthClient(config.public.supabaseURL, config.public.supabaseKey)
 
+  console.log('supaseURL runtimeconfig:' + config.public.supabaseURL)
 
+  console.log('supabaseKey runtimeconfig:' + config.public.supabaseKey)
 const loading = ref(false)
 const email = ref('')
 
