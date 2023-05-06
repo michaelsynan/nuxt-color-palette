@@ -1,5 +1,5 @@
 # Color Palette Generator 
-**🌈 Generator color palettes here: https://michaelsynan.github.io/nuxt-color-palette/**
+**🌈 Generator color palettes here: https://colors.formworkstudios.com**
 
 Simple color palette generator built with [Nuxt](https://nuxt.com). 
 
