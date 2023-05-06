@@ -1,6 +1,8 @@
 <template>
   <div class="flex items-center justify-center min-h-screen">
-    <a :href="confirmationUrl">Click here to confirm</a>
+    <ClientOnly>
+      <a :href="confirmationUrl">Click here to confirm</a>
+    </ClientOnly>
   </div>
 </template>
 
@@ -12,7 +14,7 @@ import { onMounted, computed } from 'vue';
 const route = useRoute();
 
 // Create a computed property to dynamically compute the value of the confirmationUrl
-const confirmationUrl = computed(() => route.query.confirmation_url);
+const confirmationUrl = computed(() => route.value.query.confirmation_url);
 
 // Use the onMounted lifecycle hook to log the confirmationUrl when the component is mounted
 onMounted(() => {
