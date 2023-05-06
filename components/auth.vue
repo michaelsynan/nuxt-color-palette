@@ -1,15 +1,13 @@
 <script setup>
-
+  const supabaseURL = 'process.env.SUPABASE_URL'
+  const supabaseKey = 'process.env.SUPABASE_KEY'
+  const supabase = useSupabaseClient(supabaseURL, supabaseKey)
 
 
 const loading = ref(false)
 const email = ref('')
 
-onMounted(()=>{
-  const supabaseURL = 'process.env.SUPABASE_URL'
-  const supabaseKey = 'process.env.SUPABASE_KEY'
-  const supabase = useSupabaseClient(supabaseURL, supabaseKey)
-})
+
 const handleLogin = async () => {
   try {
     loading.value = true
