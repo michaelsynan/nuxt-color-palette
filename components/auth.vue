@@ -1,11 +1,6 @@
 <script setup>
 
-const config = useRuntimeConfig()
-  const supabase = useSupabaseClient('https://lyrqtmaueesenuuhozvn.supabase.co', '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5cnF0bWF1ZWVzZW51dWhvenZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODI4Nzc4MTIsImV4cCI6MTk5ODQ1MzgxMn0.FejhDNqjbooxQIDF2StCVkVsNDgEolgoIe9Mibf49hE')
-
-  console.log('supaseURL runtimeconfig:' + config.public.supabaseURL)
-
-  console.log('supabaseKey runtimeconfig:' + config.public.supabaseKey)
+const supabase = useSupabaseClient('https://lyrqtmaueesenuuhozvn.supabase.co', '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5cnF0bWF1ZWVzZW51dWhvenZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODI4Nzc4MTIsImV4cCI6MTk5ODQ1MzgxMn0.FejhDNqjbooxQIDF2StCVkVsNDgEolgoIe9Mibf49hE')
 
 const loading = ref(false)
 const email = ref('')
@@ -14,10 +9,10 @@ const email = ref('')
 const handleLogin = async () => {
   try {
     loading.value = true
-    const { user, session, error } = await supabase.auth.signInWithOtp({ email: email.value, 
-   /* options: {
-      emailRedirectTo: 'https://colors.formworkstudios.com/',
-    }, */
+    const { error } = await supabase.auth.signInWithOtp({ email: email.value
+ /*   options: {
+      redirectTo: 'https://colors.formworkstudios.com/',
+    },  */
     })
     if (error) throw error
     alert('Check your email for the login link!')
