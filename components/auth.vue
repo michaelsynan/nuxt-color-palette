@@ -15,9 +15,9 @@ const handleLogin = async () => {
   try {
     loading.value = true
     const { user, session, error } = await supabase.auth.signInWithOtp({ email: email.value, 
-    options: {
+   /* options: {
       emailRedirectTo: 'https://colors.formworkstudios.com/',
-    }, 
+    }, */
     })
     if (error) throw error
     alert('Check your email for the login link!')
