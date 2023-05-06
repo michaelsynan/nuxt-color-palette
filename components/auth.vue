@@ -1,7 +1,6 @@
 <script setup>
-  const supabaseURL = process.env.SUPABASE_URL
-  const supabaseKey = process.env.SUPABASE_KEY
-  const supabase = useSupabaseClient(supabaseURL, supabaseKey)
+const config = useRuntimeConfig()
+  const supabase = useSupabaseAuthClient(config.supabaseURL, config.supabaseKey)
 
 
 const loading = ref(false)

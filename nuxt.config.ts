@@ -5,9 +5,11 @@ import Components from 'unplugin-vue-components/vite'
 
 export default defineNuxtConfig({
   target: 'static',
-  env: {
-    supabaseUrl: process.env.SUPABASE_URL,
-    supabaseKey: process.env.SUPABASE_KEY,
+  runtimeConfig: {
+    public: {
+      supabaseUrl:'',
+    supabaseKey: '',
+    }
   },
   app: {
     baseURL: process.env.NODE_ENV === 'development' ? '/' : '/nuxt-color-palette/',  
